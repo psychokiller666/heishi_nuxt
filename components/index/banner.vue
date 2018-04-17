@@ -34,7 +34,7 @@ export default {
         border-radius: .16rem;
         padding: .27rem .13rem .53rem .13rem;
         a {
-          box-shadow: 0 .13rem 0.3rem rgba(0,0,0,.3);
+          box-shadow: 0 0.134rem 0.4rem rgba(0,0,0,.06);
           border-radius: .16rem;
           .hs-cover
         }

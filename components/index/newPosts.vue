@@ -2,14 +2,14 @@
   <div class="index-new-post">
     <div class="header">
       <div class="title">新品</div>
-      <div class="labal">还是热乎的</div>
+      <div class="label">还是热乎的</div>
     </div>
     <div class="item" v-for="item in newposts_item" :key="item.id">
         <nuxt-link to="/" class="image" v-lazy:background-image.container="item.cover"></nuxt-link>
         <div class="text">
           <nuxt-link to="/">
             <div class="title">{{ item.title }}</div>
-            <div class="labal" v-for="label in item.characteristics" :key="label">{{ label }}</div>
+            <div class="label" v-for="label in item.characteristics" :key="label">{{ label }}</div>
           </nuxt-link>
           <nuxt-link to="/" class="user">
             <div class="avatar" v-lazy:background-image.container="item.user_avatar"></div>
@@ -35,7 +35,7 @@ export default {
 
 .index-new-post {
   margin-top: .53rem;
-  margin-bottom: .4rem;
+  // margin-bottom: .4rem;
   margin-left: .4rem;
   margin-right: .4rem;
   border-bottom: .013rem solid #E8E8E8;
@@ -47,7 +47,7 @@ export default {
       font-weight: 700;
       margin-bottom: .16rem;
     }
-    .labal {
+    .label {
       line-height: 1em;
       .font-dpr(12px);
       color: #8E8E8E;
@@ -75,7 +75,7 @@ export default {
         font-size: 0.373rem;
         overflow: hidden;
       }
-      .labal {
+      .label {
         color: #8E8E8E;
         .font-dpr(12px);
         margin: 0.21rem 0.16rem 0.21rem 0;

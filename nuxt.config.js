@@ -36,6 +36,7 @@ module.exports = {
   },
   axios: {
     baseURL: 'http://10.0.0.102:3000/api/',
+    browserBaseURL: '/api/',
     proxy: true,
     // debug: true
   },
