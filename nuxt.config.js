@@ -32,11 +32,11 @@ module.exports = {
     '@nuxtjs/proxy'
   ],
   proxy: {
-    '/api/': { target: 'https://apitest.ontheroadstore.com', pathRewrite: {'^/api/': ''} }
+    '/api/': { target: 'https://api.ontheroadstore.com', pathRewrite: {'^/api/': ''} }
   },
   axios: {
-    baseURL: 'http://10.0.0.102:3000/api/',
-    browserBaseURL: '/api/',
+    baseURL: 'http://localhost:3000/api/',
+    browserBaseURL: 'http://localhost:3000/api/',
     proxy: true,
     // debug: true
   },

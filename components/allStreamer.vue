@@ -31,7 +31,7 @@ header{
         width: 10rem;
         overflow: hidden;
         z-index: 100;
-        position: absolute;
+        position: fixed;
         left: 50%;
         margin-left: -5rem;
         ul{

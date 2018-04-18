@@ -1,7 +1,7 @@
 <template>
   <div class="index-classification">
     <cube-scroll :data="classification_item" direction="horizontal" ref="classification">
-      <nuxt-link to="/" class="item" v-for="item in classification_item" :key="item.url">
+      <nuxt-link to="/" class="item" v-for="(item, index) in classification_item" :key="index">
         <div class="image" v-lazy:background-image.container="item.image"></div>
         <div class="label">{{ item.title }}</div>
       </nuxt-link>

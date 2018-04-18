@@ -70,10 +70,14 @@ export default {
       .hs-fr;
       .title {
         color: #202123;
-        height: 2.5em;
-        line-height: 1.2em;
-        font-size: 0.373rem;
+        // height: 2em;
+        line-height: 1.3em;
+        .font-dpr(14px);
         overflow: hidden;
+        text-overflow:ellipsis;
+        display:-webkit-box;
+        -webkit-box-orient:vertical;
+        -webkit-line-clamp:2;
       }
       .label {
         color: #8E8E8E;

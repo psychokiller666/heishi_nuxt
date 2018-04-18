@@ -1,5 +1,5 @@
 <template>
-  <cube-scroll :data="goodslist" @pulling-down="aaaa" ref="scroll" :options="options">
+  <cube-scroll :data="goodslist" @pulling-up="getgoodsList" ref="scroll" :options="options">
     <!-- 头图 -->
     <Banner :banner_item="banner" />
     <!-- 大专题 -->
@@ -7,7 +7,7 @@
     <!-- 新品 -->
     <newPosts :newposts_item="newposts" />
     <!-- 本周TOP10 -->
-    <div class="top10"></div>
+    <top10 :item_top10="topten" />
     <!-- 热卖 -->
     <hotSale :hotsale_item="hotsale" />
     <!-- 分类 -->
@@ -23,6 +23,7 @@ import newPosts from '~/components/index/newPosts.vue'
 import hotSale from '~/components/index/hotSale.vue'
 import Categories from '~/components/index/categories.vue'
 import postsList from '~/components/index/postsList.vue'
+import top10 from '~/components/index/top10.vue'
 
 export default {
   async asyncData ({app}) {
@@ -44,6 +45,12 @@ export default {
         qt: 4
       }
     })
+    // top10
+    const top10 = await app.$axios.$get('appv3/modules', {
+      params: {
+        qt: 7
+      }
+    })
     // 热门
     const hotsale = await app.$axios.$get('appv3/modules', {
       params: {
@@ -57,7 +64,7 @@ export default {
       params: {
         qt: 11,
         page: 1,
-        size: 30
+        size: 10
       }
     })
 
@@ -67,7 +74,8 @@ export default {
       newposts: newposts.data.result,
       hotsale: hotsale.data.result,
       categories: categories.data,
-      goodslist: goodslist.data.result
+      goodslist: goodslist.data.result,
+      topten: top10.data
     };
   },
   data () {
@@ -75,20 +83,17 @@ export default {
       // 分页
       goodslistpage: 2,
       options: {
-        // pullUpLoad: {
-        //   threshold: 0,
-        //   txt: {
-        //     more: 'Load more',
-        //     noMore: 'No more data'
-        //   }
-        // }
+        pullUpLoad: {
+          threshold: 40,
+          txt: {
+            more: 'Load more',
+            noMore: 'No more data'
+          }
+        }
       }
     }
   },
   methods: {
-    aaaa () {
-      console.log('ffffffff')
-    },
     async getgoodsList () {
       await this.$axios.$get('appv3/modules', {
         params: {
@@ -110,7 +115,7 @@ export default {
     // this.getgoodsList()
   },
   components: {
-    Banner, Classification, newPosts, hotSale, Categories, postsList
+    Banner, Classification, newPosts, hotSale, Categories, postsList, top10
   }
 }
 </script>
@@ -118,68 +123,4 @@ export default {
 <style lang="less" scoped>
 @import '../assets/less/common.less';
 
-.index-posts-list {
-  padding: 0 .4rem;
-  .item {
-    border-bottom: .013rem solid #E8E8E8;
-    padding-bottom: .53rem;
-    margin-top: .53rem;
-    .image {
-      border-radius: .16rem;
-      width: 100%;
-      height: 4.69rem;
-      border: none;
-      .hs-cover;
-    }
-    .text {
-      height: 1.89rem;
-      padding: .32rem;
-      position: relative;
-      box-sizing: border-box;
-      .title {
-        overflow: hidden;
-        text-align: left;
-        line-height: 1em;
-        .font-dpr(15px);
-        color: #202123;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-      }
-      .user {
-        position: absolute;
-        left: .32rem;
-        bottom: .32rem;
-        line-height: .53rem;
-        overflow: hidden;
-        white-space: nowrap;
-        .hs-cf;
-        .avatar {
-          width: .53rem;
-          height: .53rem;
-          .hs-avatar;
-          .hs-fl;
-        }
-        .nickname {
-          margin-left: .21rem;
-          line-height: .6rem;
-          .font-dpr(14px);
-          color: #8E8E8E;
-          .hs-fl;
-        }
-      }
-      .label {
-        position: absolute;
-        right: .32rem;
-        bottom: .32rem;
-        color: #8E8E8E;
-        .font-dpr(12px);
-        margin: 0 0.16rem 0 0;
-        padding: 0.08rem 0.133rem;
-        border-radius: 0.107rem;
-        background: #F5F5F5;
-        display: inline-block;
-      }
-    }
-  }
-}
 </style>

@@ -11,10 +11,13 @@
       </ul>
     </allStreamer>
     <nuxt class="hs-main" />
+    <Footer />
   </div>
 </template>
 
 <style lang="less">
+@import '../assets/less/common.less';
+
 html {
   color: #202123;
   .layouts {
@@ -26,7 +29,8 @@ html {
   }
   .hs-main {
     width: 10rem;
-    height: calc(100% - 1.17rem);
+    max-width: 10rem;
+    height: calc(100% - 1.17rem - 1.306rem);
     background-color: #fff;
     box-shadow: 0 .03rem .13rem #ddd;
     overflow-x: hidden;
@@ -35,15 +39,17 @@ html {
     margin-left: -5rem;
     top: 1.17rem;
   }
+
 }
 </style>
 
 <script>
 import allStreamer from '~/components/allStreamer.vue'
+import Footer from '~/components/footer.vue'
 
 export default {
   components: {
-    allStreamer
+    allStreamer, Footer
   },
   mounted () {
     // console.log(this.$refs.main)

@@ -5,7 +5,7 @@
       <div class="label">该在哪儿的都去哪儿待着</div>
     </div>
     <div class="list">
-      <nuxt-link to="/" class="item" v-for="item in categories_item" :key="item.id">
+      <nuxt-link to="/" class="item" v-for="(item, index) in categories_item" :key="index">
         <img class="image" v-lazy="item.home_picture" />
         <div class="title">{{ item.name }}</div>
       </nuxt-link>

@@ -50,7 +50,7 @@ export default {
     }
     .text {
       height: 1.89rem;
-      padding: .32rem;
+      padding: .32rem 0;
       position: relative;
       box-sizing: border-box;
       .title {
@@ -64,7 +64,7 @@ export default {
       }
       .user {
         position: absolute;
-        left: .32rem;
+        left: 0;
         bottom: .32rem;
         line-height: .53rem;
         overflow: hidden;
@@ -86,7 +86,7 @@ export default {
       }
       .label {
         position: absolute;
-        right: .32rem;
+        right: 0;
         bottom: .32rem;
         color: #8E8E8E;
         .font-dpr(12px);
