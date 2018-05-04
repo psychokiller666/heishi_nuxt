@@ -37,7 +37,7 @@ export default {
   width:9.6rem;
   margin-left: .4rem;
   padding: .53rem 0;
-  height: 2.08rem;;
+  height: 2.08rem;
   border-bottom: .013rem solid #E8E8E8;
   border-top: .013rem solid #E8E8E8;
   white-space: nowrap;

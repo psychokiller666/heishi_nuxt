@@ -1,10 +1,9 @@
 <template>
-  <basePage type="default" bottom="1.3rem" top="1.2rem">
-    <indexNavber slot="header" />
+  <basePage>
     <transition name="page-move" slot="content">
+
       <nuxt class="hs-view"></nuxt>
     </transition>
-    <baseTabber slot="tabber" />
   </basePage>
 </template>
 
@@ -13,7 +12,7 @@
 
 .hs-view {
   box-sizing: border-box;
-  transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0)
 }
 
 .page-move-enter, .page-move-leave-active {
@@ -26,14 +25,11 @@
 </style>
 
 <script>
-import allStreamer from '~/components/allStreamer.vue'
-import indexNavber from '~/components/index/navber.vue'
-import baseTabber from '~/components/baseTabber.vue'
 import basePage from '~/components/basePage.vue'
 
 export default {
   components: {
-    allStreamer, baseTabber, basePage, indexNavber
+    basePage
   }
 }
 </script>

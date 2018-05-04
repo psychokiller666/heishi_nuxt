@@ -1,9 +1,6 @@
 <template>
   <div class="index-top10">
-    <div class="header">
-      <div class="title">本周TOP10</div>
-      <div class="label">图层卖的贼鸡儿好的</div>
-    </div>
+    <baseTitle title="本周TOP10" label="图层卖的贼鸡儿好的" class="header_hack" />
     <div class="list" ref="scroll">
       <div class="item" v-for="(item, index) in item_top10" :key="index" :style="[transformIndex(index), transform(index)]" @webkit-transition-end="onTransitionEnd(index)"
       @transitionend="onTransitionEnd(index)">
@@ -20,6 +17,8 @@
   </div>
 </template>
 <script>
+import baseTitle from '~/components/baseTitle.vue'
+
 // https://warpcgd.github.io/vue-tantan-stack/
 // 动画效果
 // https://github.com/warpcgd/vue-tantan-stack/blob/v2.0/src/components/stack.vue
@@ -173,34 +172,23 @@ export default {
         return style
       }
     }
+  },
+  components: {
+    baseTitle
   }
 }
 
 </script>
-<style lang="less">
+<style lang="less" scoped>
 @import '../../assets/less/common.less';
 
 .index-top10 {
-  // height: .27rem
   position: relative;
-  .header {
+  .header_hack {
     padding-top: .53rem;
-    padding-bottom: .4rem;
     padding-left: .4rem;
     padding-right: .4rem;
-    .title {
-      line-height: 1em;
-      .font-dpr(18px);
-      font-weight: 700;
-      margin-bottom: .16rem;
-    }
-    .label {
-      line-height: 1em;
-      .font-dpr(12px);
-      color: #8E8E8E;
-    }
   }
-
   .list {
     position: relative;
     height: 2.83rem;

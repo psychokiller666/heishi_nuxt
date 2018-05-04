@@ -1,5 +1,9 @@
+// export const state = () => ({
+//   token: null
+// })
+
 export const actions = {
-  nuxtServerInit: (store, { params, route, isServer, req }) => {
+  nuxtServerInit: (store, { params, route, req }) => {
       // console.log('aaa')
   }
 }

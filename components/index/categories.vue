@@ -1,9 +1,6 @@
 <template>
   <div class="index-categories">
-    <div class="header">
-      <div class="title">热门分类</div>
-      <div class="label">该在哪儿的都去哪儿待着</div>
-    </div>
+    <baseTitle title="热门分类" label="该在哪儿的都去哪儿待着" />
     <div class="list">
       <nuxt-link to="/" class="item" v-for="(item, index) in categories_item" :key="index">
         <img class="image" v-lazy="item.home_picture" />
@@ -14,16 +11,21 @@
 </template>
 
 <script>
+import baseTitle from '~/components/baseTitle.vue'
+
 export default {
   props: {
     categories_item: {
       type: Array
     }
+  },
+  components: {
+    baseTitle
   }
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @import '../../assets/less/common.less';
 
 .index-categories {
@@ -32,20 +34,6 @@ export default {
   margin-right: .4rem;
   border-bottom: .013rem solid #E8E8E8;
   border-top: .013rem solid #E8E8E8;
-  .header {
-    margin-bottom: .4rem;
-    .title {
-      line-height: 1em;
-      .font-dpr(18px);
-      font-weight: 700;
-      margin-bottom: .16rem;
-    }
-    .label {
-      line-height: 1em;
-      .font-dpr(12px);
-      color: #8E8E8E;
-    }
-  }
   .list {
     padding-top: 0.4rem;
     display: flex;

@@ -1,6 +1,5 @@
 <template>
-  <basePage type="default" bottom="1.3rem" top="1.2rem">
-    <indexNavber slot="header" />
+  <basePage type="article" bottom="1.3rem">
     <transition name="page-move" slot="content">
       <nuxt class="hs-view"></nuxt>
     </transition>
@@ -9,8 +8,6 @@
 </template>
 
 <style lang="less" scoped>
-// @import '../assets/less/common.less';
-
 .hs-view {
   box-sizing: border-box;
   transform: translate3d(0, 0, 0);
@@ -26,14 +23,12 @@
 </style>
 
 <script>
-import allStreamer from '~/components/allStreamer.vue'
-import indexNavber from '~/components/index/navber.vue'
 import baseTabber from '~/components/baseTabber.vue'
 import basePage from '~/components/basePage.vue'
 
 export default {
   components: {
-    allStreamer, baseTabber, basePage, indexNavber
+    baseTabber, basePage
   }
 }
 </script>

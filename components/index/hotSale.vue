@@ -1,9 +1,6 @@
 <template>
   <div class="index-hot-sale">
-    <div class="header">
-      <div class="title">热门</div>
-      <div class="label">我都买不到你知道么</div>
-    </div>
+    <baseTitle title="热门" label="我都买不到你知道么" class="header_hack" />
     <cube-slide :data="hotsale_item" :showDots="false">
       <cube-slide-item class="item" v-for="item in hotsale_item" :key="item.id">
         <nuxt-link to="/" class="image" v-lazy:background-image.container="item.cover + '@640w_1l'">
@@ -27,36 +24,28 @@
 </template>
 
 <script>
+import baseTitle from '~/components/baseTitle.vue'
+
 export default {
   props: {
     hotsale_item: {
       type: Array
     }
+  },
+  components: {
+    baseTitle
   }
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @import '../../assets/less/common.less';
 
 .index-hot-sale {
-  .header {
+  .header_hack {
     padding-top: .53rem;
-    padding-bottom: .4rem;
     padding-left: .4rem;
     padding-right: .4rem;
-    // margin-bottom: .4rem;
-    .title {
-      line-height: 1em;
-      .font-dpr(18px);
-      font-weight: 700;
-      margin-bottom: .16rem;
-    }
-    .label {
-      line-height: 1em;
-      .font-dpr(12px);
-      color: #8E8E8E;
-    }
   }
   .cube-slide {
     height: 6.75rem;

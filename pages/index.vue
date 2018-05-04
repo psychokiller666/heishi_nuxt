@@ -4,19 +4,23 @@
     <Banner :banner_item="banner" />
     <!-- 大专题 -->
     <Classification :classification_item="classification" />
-    <!-- 新品 -->
-    <newPosts :newposts_item="newposts" />
     <!-- 本周TOP10 -->
     <top10 :item_top10="topten" />
+    <!-- 新品 -->
+    <newPosts :newposts_item="newposts" />
     <!-- 热卖 -->
     <hotSale :hotsale_item="hotsale" />
     <!-- 分类 -->
     <Categories :categories_item="categories" />
-    <postsList :postslist_item="goodslist" />
+    <postsList :postslist_item="goodslist" :pages="goodslistpage" />
+    <div class="scrollto">
+      <button @click="scrollTo">回到顶部</button>
+    </div>
   </cube-scroll>
 </template>
 
 <script>
+import allStreamer from '~/components/allStreamer.vue'
 import Banner from '~/components/index/banner.vue'
 import Classification from '~/components/index/classification.vue'
 import newPosts from '~/components/index/newPosts.vue'
@@ -24,6 +28,9 @@ import hotSale from '~/components/index/hotSale.vue'
 import Categories from '~/components/index/categories.vue'
 import postsList from '~/components/index/postsList.vue'
 import top10 from '~/components/index/top10.vue'
+
+import { get_Avatar } from '~/utils/util.js'
+
 
 export default {
   async asyncData ({app}) {
@@ -71,10 +78,10 @@ export default {
     return {
       banner: banner.data,
       classification: classification.data,
-      newposts: newposts.data.result,
-      hotsale: hotsale.data.result,
+      newposts: get_Avatar(newposts.data.result, 'user_avatar'),
+      hotsale: get_Avatar(hotsale.data.result, 'user_avatar'),
       categories: categories.data,
-      goodslist: goodslist.data.result,
+      goodslist: get_Avatar(goodslist.data.result, 'user_avatar'),
       topten: top10.data
     };
   },
@@ -83,18 +90,23 @@ export default {
       // 分页
       goodslistpage: 2,
       options: {
-        pullUpLoad: {
-          threshold: 40,
-          txt: {
-            more: 'Load more',
-            noMore: 'No more data'
-          }
-        }
-      }
+        pullUpLoad: true,
+        // pullDownRefresh: true
+      },
+      scrollToshow: false
+    }
+  },
+  watch: {
+    scrollToshow: function(val) {
+      console.log(this.scroll)
     }
   },
   methods: {
     async getgoodsList () {
+      if (this.goodslistpage >= 5) {
+        this.$refs.scroll.forceUpdate()
+        return false
+      }
       await this.$axios.$get('appv3/modules', {
         params: {
           qt: 11,
@@ -109,13 +121,20 @@ export default {
           this.$refs.scroll.forceUpdate()
         }
       })
+    },
+    scrollTo () {
+      this.$refs.scroll.scroll && this.$refs.scroll.scroll.scrollTo(0, 0, 700)
     }
   },
   mounted () {
-    // this.getgoodsList()
+    // this.scrollTo()
+    this.$refs.scroll.$on(this.$refs.scroll.bubbleY, (a) => {
+      console.log(a)
+    })
+    // console.log(this.$refs.scroll.bubbleY)
   },
   components: {
-    Banner, Classification, newPosts, hotSale, Categories, postsList, top10
+    Banner, Classification, newPosts, hotSale, Categories, postsList, top10, allStreamer
   }
 }
 </script>

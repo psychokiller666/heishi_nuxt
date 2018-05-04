@@ -22,171 +22,170 @@
   </header>
 </template>
 
-<style lang="less">
+<style lang="less" scoped>
 @import '../assets/less/common.less';
 
-header{
-    &.hs-header{
-        background-color: #fff;
-        width: 10rem;
-        overflow: hidden;
-        z-index: 100;
-        position: fixed;
-        left: 50%;
-        margin-left: -5rem;
-        ul{
-            height: 1.17rem;
-            background-color: #FFF;
-            color: #000;
-            padding-left: 0.64rem;
-            padding-right: 0.54rem;
-            position: relative;
-            border-bottom: .01rem solid #E8E8E8;
-            .hs-cf;
-            li{
-                float: left;
-                position: relative;
-                margin-right: 0.64rem;
-                a{
-                    .font-dpr(14px);
-                    display: block;
-                    color: #000;
-                    height: 1.17rem;
-                    line-height: 1.17rem;
-                    font-weight: 500;
-                    &.active{
-                        color: #E03B29;
-                    }
-                    &.active:after{
-                        content: "";
-                        display: block;
-                        height: 0.08rem;
-                        width: 0.32rem;
-                        position: absolute;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        -webkit-transform: translateX(-50%);
-                        bottom: 0.1rem;
-                        background-color: #E03B29;
-                        border-radius: .27rem;
-                    }
-                }
-            }
-        .search_btn{
-            position: absolute;
-            right: 0.54rem;
-            margin-right: 0;
-            .hs-icon:before{
-                .font-dpr(20px);
-                content: "\e63d";
-                color: #333333;
-            }
-        }
-        }
-    }
-    .open_app {
-      background: #676767;
-      display: none;
-      padding: 0.16rem 0.334rem 0.16rem 0.3rem;
-      &:after {
-        content: "";
-        display: block;
-        clear: both;
-      }
-      .open_app_logo {
-        width: 0.84rem;
-        height: 0.84rem;
-        margin-right: 0.334rem;
-        float: left;
-      }
-      .open_app_name {
-        float:left;
-        img {
+.hs-header {
+  background-color: #fff;
+  width: 10rem;
+  overflow: hidden;
+  z-index: 100;
+  position: fixed;
+  left: 50%;
+  margin-left: -5rem;
+  ul {
+    height: 1.17rem;
+    background-color: #FFF;
+    color: #000;
+    padding-left: 0.64rem;
+    padding-right: 0.54rem;
+    position: relative;
+    border-bottom: .01rem solid #E8E8E8;
+    .hs-cf;
+    li {
+      float: left;
+      position: relative;
+      margin-right: 0.64rem;
+      a {
+        .font-dpr(14px);
           display: block;
+          color: #000;
+          height: 1.17rem;
+          line-height: 1.17rem;
+          font-weight: 500;
+        &.nuxt-link-active {
+          color: #E03B29;
         }
-        .name {
-          width: 1.65rem;
-        }
-        .title {
-          color: #FFFFFF;
-          .font-dpr(12px);
-          margin-top: 0.05rem;
-          line-height: 1em;
-          padding: 0;
-        }
-      }
-      .open_app_btn {
-        .font-dpr(12px);
-        font-weight: 700;
-        border: 0.04rem solid #fff;
-        width: 1.92rem;
-        height: 0.64rem;
-        box-sizing: border-box;
-        float: right;
-        margin-top: 0.08rem;
-        text-align: center;
-        line-height: 0.56rem;
-        color: #fff;
-        margin-right: 0.3rem;
-      }
-      .open_app_close {
-        width: 0.77rem;
-        height: 0.77rem;
-        float: right;
-        margin-top: 0.035rem;
-      }
-    }
-    .open_hs {
-      display: none;
-      background: #E03B29;
-      padding: 0.16rem 0.334rem 0.16rem 0.3rem;
-      &:after {
-        content: "";
-        display: block;
-        clear: both;
-      }
-      .open_hs_logo {
-        width: 0.84rem;
-        height: 0.84rem;
-        margin-right: 0.334rem;
-        float: left;
-      }
-      .open_hs_name {
-        float:left;
-        img{
+        &.nuxt-link-active:after {
+          content: "";
           display: block;
+          height: 0.08rem;
+          width: 0.32rem;
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          -webkit-transform: translateX(-50%);
+          bottom: 0.1rem;
+          background-color: #E03B29;
+          border-radius: .27rem;
         }
-        .name {
-          width: 0.8rem;
-        }
-        .title {
-          color: #FFFFFF;
-          .font-dpr(12px);
-          margin-top: 0.05rem;
-          line-height: 1em;
-          padding: 0;
-        }
-      }
-      .open_hs_btn {
-        .font-dpr(12px);
-        font-weight: 700;
-        border: 0.04rem solid #fff;
-        width: 1.92rem;
-        height: 0.64rem;
-        box-sizing: border-box;
-        float: right;
-        margin-top: 0.08rem;
-        text-align: center;
-        line-height: 0.56rem;
-        color: #fff;
-        margin-right: 0.3rem;
-      }
-      .open_hs_close {
-        width: 0.77rem;
-        height: 0.77rem;
-        float: right;
-        margin-top: 0.035rem;
       }
     }
+    .search_btn {
+      position: absolute;
+      right: 0.54rem;
+      margin-right: 0;
+      .hs-icon:before{
+        .font-dpr(20px);
+        content: "\e63d";
+        color: #333333;
+      }
+    }
+  }
 }
+.open_app {
+  background: #676767;
+  display: none;
+  padding: 0.16rem 0.334rem 0.16rem 0.3rem;
+  &:after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+  .open_app_logo {
+    width: 0.84rem;
+    height: 0.84rem;
+    margin-right: 0.334rem;
+    float: left;
+  }
+  .open_app_name {
+    float:left;
+    img {
+      display: block;
+    }
+    .name {
+      width: 1.65rem;
+    }
+    .title {
+      color: #FFFFFF;
+      .font-dpr(12px);
+      margin-top: 0.05rem;
+      line-height: 1em;
+      padding: 0;
+    }
+  }
+  .open_app_btn {
+    .font-dpr(12px);
+    font-weight: 700;
+    border: 0.04rem solid #fff;
+    width: 1.92rem;
+    height: 0.64rem;
+    box-sizing: border-box;
+    float: right;
+    margin-top: 0.08rem;
+    text-align: center;
+    line-height: 0.56rem;
+    color: #fff;
+    margin-right: 0.3rem;
+  }
+  .open_app_close {
+    width: 0.77rem;
+    height: 0.77rem;
+    float: right;
+    margin-top: 0.035rem;
+  }
+  }
+  .open_hs {
+  display: none;
+  background: #E03B29;
+  padding: 0.16rem 0.334rem 0.16rem 0.3rem;
+  &:after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+  .open_hs_logo {
+    width: 0.84rem;
+    height: 0.84rem;
+    margin-right: 0.334rem;
+    float: left;
+  }
+  .open_hs_name {
+    float:left;
+    img{
+      display: block;
+    }
+    .name {
+      width: 0.8rem;
+    }
+    .title {
+      color: #FFFFFF;
+      .font-dpr(12px);
+      margin-top: 0.05rem;
+      line-height: 1em;
+      padding: 0;
+    }
+  }
+  .open_hs_btn {
+    .font-dpr(12px);
+    font-weight: 700;
+    border: 0.04rem solid #fff;
+    width: 1.92rem;
+    height: 0.64rem;
+    box-sizing: border-box;
+    float: right;
+    margin-top: 0.08rem;
+    text-align: center;
+    line-height: 0.56rem;
+    color: #fff;
+    margin-right: 0.3rem;
+  }
+  .open_hs_close {
+    width: 0.77rem;
+    height: 0.77rem;
+    float: right;
+    margin-top: 0.035rem;
+  }
+}
+
 </style>
