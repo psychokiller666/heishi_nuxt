@@ -41,7 +41,7 @@
         <div class="title">狠人说</div>
         <div class="content" v-html="article.content"></div>
         <div class="image">
-          <div class="item" v-for="(item, index) in article.images" :key="index" v-lazy:background-image.container="item + '@!320x320'"></div>
+          <div class="item" src="item" v-for="(item, index) in article.images" :key="index" v-lazy:background-image.container="item + '@!320x320'"></div>
         </div>
       </div>
       <div class="praise">
@@ -56,10 +56,10 @@
       </div>
     </div>
     <!-- 评论 -->
-    <comment :data="article.comments.comment_list" :total_count="article.comments.total_count" />
+    <comment :data="article.comments.comment_list" :total_count="article.comments.total_count" :id="Number(this.$route.params.id)" />
     <seller :data="article.modules[0].data.result[0].goods" :seller="article.seller" />
     <guessLike :data="article.modules[1].data.result" />
-    <rewardPopup ref="popup" />
+    <rewardPopup ref="rewardPopup" />
   </cube-scroll>
 </template>
 
@@ -85,11 +85,13 @@ export default {
   },
   methods: {
     openRewardPopup () {
-      this.$refs.popup.show()
+      // this.$refs.popup.show()
+      // console.log(this)
     }
   },
   mounted () {
-    this.$refs.popup.show()
+    // console.log(this.$route.params.id)
+    // this.$refs.popup.show()
     // console.log(this.article)
   }
 }

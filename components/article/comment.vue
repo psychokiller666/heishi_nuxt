@@ -1,7 +1,9 @@
 <template>
-  <div class="article-comment">
-    <div class="title">评论</div>
-    <button class="comment-btn">淡逼为主 聊事为辅</button>
+  <div class="article-comment" :class="child ? 'child': ''">
+    <template v-if="!child">
+      <div class="title">评论</div>
+      <button class="comment-btn">淡逼为主 聊事为辅</button>
+    </template>
     <div class="list">
       <div class="item" v-for="(item, index) in data" :key="index">
         <div class="avatar" v-lazy:background-image.container="item.uid_img"></div>
@@ -28,7 +30,9 @@
           </div>
         </div>
       </div>
-      <nuxt-link class="comment-all" to="/">查看全部{{ total_count }}条评论</nuxt-link>
+      <template v-if="!child">
+        <nuxt-link v-if="total_count > 5" class="comment-all" :to="{ name: 'detail-comment-id', params: { id: id } }">查看全部{{ total_count }}条评论</nuxt-link>
+      </template>
     </div>
   </div>
 </template>
@@ -36,11 +40,18 @@
 <script>
 export default {
   props: {
+    id: {
+      type: Number
+    },
     data: {
       type: Array
     },
     total_count: {
       type: Number
+    },
+    child: {
+      type: Boolean,
+      default: false
     }
   }
 }
@@ -48,10 +59,14 @@ export default {
 
 <style lang="less" scoped>
   @import '../../assets/less/common.less';
-  
+
   .article-comment {
     padding: .4rem .4rem 0 .4rem;
     border-bottom: .21rem solid #F5F5F5;
+    &.child {
+      padding: 0 .4rem;
+      border-bottom: none;
+    }
     .title {
       .font-dpr(18px);
       margin-bottom: .4rem;
