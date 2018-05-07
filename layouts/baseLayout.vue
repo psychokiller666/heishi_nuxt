@@ -1,7 +1,6 @@
 <template>
   <basePage>
     <transition name="page-move" slot="content">
-
       <nuxt class="hs-view"></nuxt>
     </transition>
   </basePage>

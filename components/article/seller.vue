@@ -8,12 +8,12 @@
           <div class="motto">{{ seller.motto }}</div>
         </div>
       </div>
-      <nuxt-link to="/" class="seller-all">全部狠货</nuxt-link>
+      <nuxt-link :to="{ name: 'user-id', params: { id: seller.id }}" class="seller-all">全部狠货</nuxt-link>
     </div>
     <div class="list">
       <cube-scroll :data="data" direction="horizontal" ref="seller">
-        <nuxt-link to="/" class="item" v-for="(item, index) in data" :key="index">
-          <div class="image" v-lazy:background-image.container="item.cover"></div>
+        <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }" class="item" v-for="(item, index) in data" :key="index">
+          <div class="image" v-lazy:background-image.container="item.cover + '@640w_1l'"></div>
           <div class="label">{{ item.title }}</div>
         </nuxt-link>
       </cube-scroll>

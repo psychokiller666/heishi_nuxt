@@ -57,9 +57,24 @@
     </div>
     <!-- 评论 -->
     <comment :data="article.comments.comment_list" :total_count="article.comments.total_count" :id="Number(this.$route.params.id)" />
+    <!-- 卖家 -->
     <seller :data="article.modules[0].data.result[0].goods" :seller="article.seller" />
+    <!-- 猜你喜欢 -->
     <guessLike :data="article.modules[1].data.result" />
-    <rewardPopup ref="rewardPopup" />
+    <!-- 打赏 -->
+    <Popup type="reward-popup" addbodyend ref="rewardPopup">
+      <div class="box">
+        <div class="avatar" v-lazy:background-image.container="article.seller.avatar"></div>
+        <div class="nickname">{{ article.seller.name }}</div>
+        <div class="title">{{ article.title }}</div>
+        <div class="form">
+          <cube-input v-model="rewardValue" class="reward-input" placeholder="随意打赏，但必须是整数～"></cube-input>
+          <button class="submit-btn"><strong>赏</strong></button>
+        </div>
+      </div>
+      <button class="close-btn" @click="closeRewardPopup"></button>
+    </Popup>
+
   </cube-scroll>
 </template>
 
@@ -67,11 +82,16 @@
 import guessLike from '~/components/article/guessLike.vue'
 import comment from '~/components/article/comment.vue'
 import seller from '~/components/article/seller.vue'
-import rewardPopup from '~/components/article/rewardPopup.vue'
+import Popup from '~/components/basePopup.vue'
 
 export default {
   validate ({ params }) {
     return (!!params.id && !Object.is(Number(params.id), NaN))
+  },
+  data () {
+    return {
+      rewardValue: null
+    }
   },
   layout: 'articleLayout',
   async asyncData ({app, params}) {
@@ -81,17 +101,19 @@ export default {
     }
   },
   components: {
-    guessLike, comment, seller, rewardPopup
+    guessLike, comment, seller, Popup
   },
   methods: {
     openRewardPopup () {
-      // this.$refs.popup.show()
-      // console.log(this)
+      this.$refs.rewardPopup.show()
+    },
+    closeRewardPopup () {
+      this.$refs.rewardPopup.hide()
     }
   },
   mounted () {
     // console.log(this.$route.params.id)
-    // this.$refs.popup.show()
+    // this.$refs.rewardPopup.show()
     // console.log(this.article)
   }
 }
@@ -100,8 +122,110 @@ export default {
 <style lang="less" scoped>
   @import '../../assets/less/common.less';
 
+  .cube-reward-popup {
+    text-align: center;
+    .box {
+      width: 7.65rem;
+      background-color: #fefeff;
+      border-radius: .28rem;
+      position: relative;
+      padding: .4rem;
+      text-align: center;
+      box-sizing: border-box;
+      .avatar {
+        .hs-avatar;
+        width: 1.58rem;
+        height: 1.58rem;
+        margin: 0 auto;
+      }
+      .nickname {
+        margin-top: .4rem;
+        .font-dpr(16px);
+      }
+      .title {
+        width: 100%;
+        margin-top: .4rem;
+        position: relative;
+        .font-dpr(14px);
+        color: #8f8e8e;
+        padding: 0 1em;
+        box-sizing: border-box;
+        &:after, &:before {
+          position: absolute;
+          font-family: "iconfont"!important;
+          font-style: normal;
+          -webkit-font-smoothing: antialiased;
+          -webkit-text-stroke-width: .2px;
+          .font-dpr(16px);
+          line-height: 1em;
+        }
+        &:before {
+          top: -.04rem;
+          left: 0;
+          content: "\e644";
+        }
+        &:after {
+          top: -.08rem;
+          right: 0;
+          content: "\e643";
+        }
+      }
+      .form {
+        height: 1rem;
+        margin-top: .4rem;
+        position: relative;
+        .reward-input {
+          box-sizing: border-box;
+          width: 5.1rem;
+          height: 1rem;
+          position: absolute;
+          .cube-input-field {
+            padding: .05rem;
+            border-radius: .653333rem 0 0 .653333rem;
+          }
+        }
+        .submit-btn {
+          box-sizing: border-box;
+          position: absolute;
+          width: 1.75rem;
+          line-height: 1rem;
+          height: 1rem;
+          border: none;
+          float: right;
+          text-align: center;
+          background-color: transparent;
+          right: 0;
+          border: #f5f5f5 solid .0133rem;
+          border-radius: 0 .653333rem .653333rem 0;
+          strong {
+            font-style: normal;
+            background-color: #ae2121;
+            color: #fff;
+            display: block;
+            width: .653333rem;
+            height: .653333rem;
+            border-radius: .653333rem;
+            line-height: .653333rem;
+            font-size: .4rem;
+            margin: 0 auto;
+          }
+        }
+      }
+    }
+    .close-btn {
+      background-image: url(//img8.ontheroadstore.com/upload/180417/35113f83e81449ea76530e26bcc9385d.png);
+      background-size: 100% 100%;
+      width: .96rem;
+      height: .96rem;
+      border: none;
+      margin-top: .8rem;
+      background-color: transparent;
+    }
+  }
+
   .article-header {
     border-bottom: .21rem solid #F5F5F5;
+
     .image {
       height: 5.09rem;
       .hs-cover;

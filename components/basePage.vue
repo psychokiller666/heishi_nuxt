@@ -1,7 +1,7 @@
 <template>
   <div class="hs-page" :class="type">
     <slot name="header"></slot>
-    <main class="hs-container" :style="{ 'padding-top': top, 'padding-bottom': bottom }">
+    <main class="hs-container" :style="containerHeight">
       <slot name="content"></slot>
     </main>
     <slot name="tabber"></slot>
@@ -11,14 +11,6 @@
 <script>
   export default {
     name: 'page',
-    data () {
-      return {
-        padding: {
-          top: 0,
-          bottom: 0
-        }
-      }
-    },
     props: {
       type: {
         type: String,
@@ -31,6 +23,14 @@
       top: {
         type: String,
         default: '0rem'
+      }
+    },
+    computed: {
+      containerHeight () {
+        return {
+          'padding-top': this.top,
+          'padding-bottom': this.bottom
+        }
       }
     }
   }

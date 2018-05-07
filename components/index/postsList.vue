@@ -1,10 +1,10 @@
 <template>
   <div class="index-posts-list">
     <slot name="header"></slot>
-    <div class="item" to="/" v-for="item in postslist_item" :key="item.id">
-      <div class="image" v-lazy:background-image.container="item.cover + '@640w_1l'"></div>
+    <div class="item" v-for="item in postslist_item" :key="item.id">
+      <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }" class="image" v-lazy:background-image.container="item.cover + '@640w_1l'"></nuxt-link>
       <div class="text">
-        <nuxt-link to="/">
+        <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }">
           <div class="title">{{ item.title }}</div>
         </nuxt-link>
         <nuxt-link to="/" class="user">
@@ -99,6 +99,7 @@ export default {
       border: none;
     }
     .image {
+      display: block;
       border-radius: .16rem;
       width: 100%;
       height: 4.69rem;

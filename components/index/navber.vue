@@ -71,6 +71,8 @@
       align-items: center;
       justify-content: center;
       .search-btn {
+        border: none;
+        background-color: transparent;
         .hs-icon;
         &:before {
           .font-dpr(20px);

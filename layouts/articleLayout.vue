@@ -3,7 +3,7 @@
     <transition name="page-move" slot="content">
       <nuxt class="hs-view"></nuxt>
     </transition>
-    <baseTabber slot="tabber" />
+    <Tabber slot="tabber" />
   </basePage>
 </template>
 
@@ -25,10 +25,11 @@
 <script>
 import baseTabber from '~/components/baseTabber.vue'
 import basePage from '~/components/basePage.vue'
+import Tabber from '~/components/article/tabber.vue'
 
 export default {
   components: {
-    baseTabber, basePage
+    baseTabber, basePage, Tabber
   }
 }
 </script>

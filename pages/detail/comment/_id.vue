@@ -8,6 +8,9 @@
 import comment from '~/components/article/comment.vue'
 
 export default {
+  validate ({ params }) {
+    return (!!params.id && !Object.is(Number(params.id), NaN))
+  },
   async asyncData ({app, params}) {
     const res = await app.$axios.$get('appv1/itemcomment', {
       params: {

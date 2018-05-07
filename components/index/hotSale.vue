@@ -3,21 +3,20 @@
     <baseTitle title="热门" label="我都买不到你知道么" class="header_hack" />
     <cube-slide :data="hotsale_item" :showDots="false">
       <cube-slide-item class="item" v-for="item in hotsale_item" :key="item.id">
-        <nuxt-link to="/" class="image" v-lazy:background-image.container="item.cover + '@640w_1l'">
-          <!-- <img v-lazy:background-image.container="item.cover + '@640w_1l'" /> -->
-        </nuxt-link>
+        <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }" class="image" v-lazy:background-image.container="item.cover + '@640w_1l'"></nuxt-link>
         <div class="text">
-          <nuxt-link to="/">
+          <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }">
             <div class="title">{{ item.title }}</div>
           </nuxt-link>
-          <nuxt-link to="/" class="user">
+          <nuxt-link :to="{ name: 'user-id', params: { id: item.author } }" class="user">
             <div class="avatar" v-lazy:background-image.container="item.user_avatar"></div>
             <span class="nickname">{{ item.user_name }}</span>
           </nuxt-link>
-          <nuxt-link to="/" class="label" v-for="label in item.characteristics" :key="label">
+          <span class="label" v-for="label in item.characteristics" :key="label">
             {{ label }}
-          </nuxt-link>
+          </span>
         </div>
+        <!-- <div class="mark"></div> -->
       </cube-slide-item>
     </cube-slide>
   </div>
@@ -57,26 +56,34 @@ export default {
       background-color: #fff;
       position: relative;
       &:before {
+        content: '';
         position: absolute;
-        content: "";
         width: 8.14rem;
         height: 6.08rem;
         top: 0;
         left: .13rem;
         box-shadow: 0 0.134rem 0.4rem rgba(0,0,0,.06);
-        z-index: 9999;
         border-radius: .16rem;
+        // z-index: -999;
+        background-color: transparent;
       }
       .image {
+        position: absolute;
+        width: 8.14rem;
         border-radius: .16rem .16rem 0 0;
         height: 4.32rem;
         .hs-cover;
+        display: block;
+        z-index: 999;
       }
       .text {
+        position: absolute;
+        top: 4.32rem;
         height: 1.89rem;
         padding: .32rem;
         position: relative;
         box-sizing: border-box;
+        z-index: 999;
         .title {
           overflow: hidden;
           text-align: left;

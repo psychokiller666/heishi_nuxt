@@ -4,18 +4,18 @@
       猜你喜欢
     </div>
     <div class="item" v-for="item in data" :key="item.id">
-        <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }" class="image" v-lazy:background-image.container="item.cover"></nuxt-link>
+      <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }" class="image" v-lazy:background-image.container="item.cover+ '@640w_1l'"></nuxt-link>
         <div class="text">
-          <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }">
-            <div class="title">{{ item.title }}</div>
-            <div class="label" v-for="label in item.characteristics" :key="label">{{ label }}</div>
-          </nuxt-link>
-          <nuxt-link to="/" class="user">
-            <div class="avatar" v-lazy:background-image.container="item.user_avatar"></div>
-            <span class="nickname">{{ item.user_name }}</span>
-          </nuxt-link>
-          <div class="price">¥111</div>
-        </div>
+        <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }">
+          <div class="title">{{ item.title }}</div>
+          <div class="label" v-for="label in item.characteristics" :key="label">{{ label }}</div>
+        </nuxt-link>
+        <nuxt-link to="/" class="user">
+          <div class="avatar" v-lazy:background-image.container="item.user_avatar"></div>
+          <span class="nickname">{{ item.user_name }}</span>
+        </nuxt-link>
+        <div class="price">¥111</div>
+      </div>
     </div>
   </div>
 </template>
