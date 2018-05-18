@@ -1,5 +1,5 @@
 <template>
-  <cube-popup :type="type" :mask="mask" ref="popup" @mask-click="hide">
+  <cube-popup :type="type" :mask="mask" :center="false" ref="popup" @mask-click="hide" :class="'cube-popup-' + position">
     <slot></slot>
   </cube-popup>
 </template>
@@ -24,6 +24,11 @@ export default {
     center: {
       type: Boolean,
       default: true
+    },
+    position: {
+      required: true,
+      type: String,
+      default: ''
     }
   },
   methods: {
@@ -41,3 +46,46 @@ export default {
   }
 }
 </script>
+
+<style lang="less">
+// hack cube ui popup组件
+.cube-popup {
+  width: 10rem;
+  left: 50%;
+  margin-left: -5rem;
+  .cube-popup-mask {
+
+  }
+  &.cube-popup-top {
+    .cube-popup-container {
+      .cube-popup-content {
+        height: 100%;
+      }
+    }
+  }
+  &.cube-popup-bottom {
+    .cube-popup-container {
+      .cube-popup-content {
+        height: auto;
+      }
+    }
+  }
+  &.cube-popup-center {
+    .cube-popup-container {
+      .cube-popup-content {
+        height: auto;
+      }
+    }
+  }
+  // .cube-popup-container {
+  //   .cube-popup-content {
+  //     height: 100%;
+  //   }
+  //   &.cube-popup-center {
+  //     .cube-popup-content {
+  //       height: auto;
+  //     }
+  //   }
+  // }
+}
+</style>

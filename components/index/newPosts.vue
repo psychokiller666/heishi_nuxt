@@ -1,7 +1,7 @@
 <template>
   <div class="index-new-post">
     <baseTitle title="新品" label="还是热乎的" />
-    <div class="item" v-for="item in newposts_item" :key="item.id">
+    <div class="item" v-for="item in data" :key="item.id">
         <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }" class="image" v-lazy:background-image.container="item.cover"></nuxt-link>
         <div class="text">
           <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }">
@@ -22,7 +22,7 @@ import baseTitle from '~/components/baseTitle.vue'
 
 export default {
   props: {
-    newposts_item: {
+    data: {
       type: Array
     }
   },

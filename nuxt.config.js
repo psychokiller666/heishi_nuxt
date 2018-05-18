@@ -27,6 +27,9 @@ module.exports = {
   css: [
     'cube-ui/lib/style.css'
   ],
+  router: {
+    linkActiveClass: 'active'
+  },
   cache: {
     max: 20,
     maxAge: 600000
@@ -49,7 +52,7 @@ module.exports = {
   axios: {
     baseURL: config.baseUrl,
     browserBaseURL: config.baseUrl,
-    proxy: true,
+    proxy: true
     // retry: true,
     // debug: true
     // debug: true

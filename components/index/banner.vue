@@ -1,7 +1,7 @@
 <template>
   <div class="index-banner">
-    <cube-slide :data="banner_item">
-      <cube-slide-item class="item" v-for="(item, index) in banner_item" :key="index">
+    <cube-slide :data="data">
+      <cube-slide-item class="item" v-for="(item, index) in data" :key="index">
         <nuxt-link to="/" v-lazy:background-image.container="item.image + '@640w_1l'"></nuxt-link>
       </cube-slide-item>
       <div slot="dots" slot-scope="props" class="dots">
@@ -14,7 +14,7 @@
 <script>
 export default {
   props: {
-    banner_item: {
+    data: {
       type: Array
     }
   }

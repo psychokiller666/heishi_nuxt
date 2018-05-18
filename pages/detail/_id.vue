@@ -8,7 +8,7 @@
       </div>
       <div class="title">{{ article.title }}</div>
       <div class="label">
-        <div class="price">￥{{ article.price[0] }}</div>
+        <div class="price">￥{{ price }}</div>
         <div class="tags">
           <span>包邮</span>
           <span>预售</span>
@@ -22,7 +22,7 @@
         <div class="label" v-lazy:background-image.container="article.seller.avatar"></div>
         <div class="text">{{ article.seller.announcement }}</div>
       </div>
-      <div class="item">
+      <div class="item" @click="openstylePopup">
         <div class="label">已选</div>
         <div class="text">深海诱惑 1件</div>
       </div>
@@ -60,11 +60,18 @@
     <!-- 卖家 -->
     <seller :data="article.modules[0].data.result[0].goods" :seller="article.seller" />
     <!-- 猜你喜欢 -->
-    <guessLike :data="article.modules[1].data.result" />
+    <guessLike :data="article.modules[1].data.result">
+      <baseTitle title="猜你喜欢" slot="header" />
+    </guessLike>
+    <!-- tabber -->
+    <Tabber :seller="article.seller" class="article-tabber">
+      <button class="addcart-btn" @click="openstylePopup">加入购物车</button>
+      <button class="buy-btn">买他妈的</button>
+    </Tabber>
     <!-- 打赏 -->
-    <Popup type="reward-popup" addbodyend ref="rewardPopup">
+    <Popup type="reward-popup" addbodyend ref="rewardPopup" position="center">
       <div class="box">
-        <div class="avatar" v-lazy:background-image.container="article.seller.avatar"></div>
+        <div class="avatar" :style="{ 'background-image': 'url('+ article.seller.avatar +')' }"></div>
         <div class="nickname">{{ article.seller.name }}</div>
         <div class="title">{{ article.title }}</div>
         <div class="form">
@@ -74,15 +81,19 @@
       </div>
       <button class="close-btn" @click="closeRewardPopup"></button>
     </Popup>
-
+    <!-- 选择款式 -->
+    <Sku :data="article.type" :banner="article.banner[0]" :title="article.title" ref="skuPopup" />
   </cube-scroll>
 </template>
 
 <script>
-import guessLike from '~/components/article/guessLike.vue'
+import guessLike from '~/components/baseGuessLike.vue'
 import comment from '~/components/article/comment.vue'
 import seller from '~/components/article/seller.vue'
 import Popup from '~/components/basePopup.vue'
+import Tabber from '~/components/article/tabber.vue'
+import Sku from '~/components/article/sku.vue'
+import baseTitle from '~/components/baseTitle.vue'
 
 export default {
   validate ({ params }) {
@@ -96,12 +107,13 @@ export default {
   layout: 'articleLayout',
   async asyncData ({app, params}) {
     const res = await app.$axios.$get('appv3_1/goods/' + params.id)
+    // console.log(res)
     return {
       article: res.data
     }
   },
   components: {
-    guessLike, comment, seller, Popup
+    guessLike, comment, seller, Popup, Tabber, Sku, baseTitle
   },
   methods: {
     openRewardPopup () {
@@ -109,18 +121,43 @@ export default {
     },
     closeRewardPopup () {
       this.$refs.rewardPopup.hide()
+    },
+    openstylePopup () {
+      this.$refs.skuPopup.show()
+    },
+    closestylePopup() {
+      this.$refs.skuPopup.hide()
     }
   },
-  mounted () {
-    // console.log(this.$route.params.id)
-    // this.$refs.rewardPopup.show()
-    // console.log(this.article)
+  computed: {
+    price () {
+      if (this.article.price.length === 1) {
+        return this.article.price[0]
+      } else {
+        return this.article.price[0] + ' ~ ' + this.article.price[1]
+      }
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
   @import '../../assets/less/common.less';
+  .article-tabber {
+    .addcart-btn {
+      width: 50%;
+      background-color: #fff;
+      font-weight: 700;
+    }
+    .buy-btn {
+      width: 50%;
+      background-color: #ae2121;
+      color: #fff;
+      font-weight: 400;
+    }
+  }
+
+
 
   .cube-reward-popup {
     text-align: center;

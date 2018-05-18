@@ -1,21 +1,19 @@
 <template>
-  <div class="article-guess-like">
-    <div class="title">
-      猜你喜欢
-    </div>
+  <div class="index-new-post">
+    <!-- <baseTitle title="新品" label="还是热乎的" /> -->
     <div class="item" v-for="item in data" :key="item.id">
-      <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }" class="image" v-lazy:background-image.container="item.cover+ '@640w_1l'"></nuxt-link>
+        <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }" class="image" v-lazy:background-image.container="item.cover"></nuxt-link>
         <div class="text">
-        <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }">
-          <div class="title">{{ item.title }}</div>
-          <div class="label" v-for="label in item.characteristics" :key="label">{{ label }}</div>
-        </nuxt-link>
-        <nuxt-link to="/" class="user">
-          <div class="avatar" v-lazy:background-image.container="item.user_avatar"></div>
-          <span class="nickname">{{ item.user_name }}</span>
-        </nuxt-link>
-        <div class="price">¥111</div>
-      </div>
+          <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }">
+            <div class="title">{{ item.title }}</div>
+            <!-- <div class="label" v-for="label in item.characteristics" :key="label">{{ label }}</div> -->
+          </nuxt-link>
+          <nuxt-link to="/" class="user">
+            <div class="avatar" v-lazy:background-image.container="item.user_avatar"></div>
+            <span class="nickname">{{ item.user_name }}</span>
+          </nuxt-link>
+          <div class="price">{{ aaaa }}</div>
+        </div>
     </div>
   </div>
 </template>
@@ -28,6 +26,23 @@ export default {
     data: {
       type: Array
     }
+  },
+  computed: {
+    price () {
+      if (this.article.price.length === 1) {
+        return this.article.price[0]
+      } else {
+        return this.article.price[0] + ' ~ ' + this.article.price[1]
+      }
+    }
+  },
+  methods: {
+    aaaa () {
+      return 'aaaa'
+    }
+  },
+  components: {
+    baseTitle
   }
 }
 </script>
@@ -35,21 +50,17 @@ export default {
 <style lang="less" scoped>
 @import '../../assets/less/common.less';
 
-.article-guess-like {
-  padding: .4rem;
-  .title {
-    font-weight: 700;
-    .font-dpr(18px);
-    margin-bottom: .4rem;
-  }
+.index-new-post {
+  margin-top: .53rem;
+  // margin-bottom: .4rem;
+  margin-left: .4rem;
+  margin-right: .4rem;
+  border-bottom: .013rem solid #E8E8E8;
   .item {
     margin-bottom: .53rem;
     overflow: hidden;
-    &:last-child {
-      margin-bottom: 0;
-    }
     .image {
-      width: 4.48rem;
+      width: 4.45rem;
       height: 2.29rem;
       border-radius: .16rem;
       .hs-cover;
@@ -80,21 +91,14 @@ export default {
         background: #F5F5F5;
         display: inline-block;
       }
-      .price {
-        position: absolute;
-        font-family: "din";
-        font-weight: 700;
-        .font-dpr(16px);
-        bottom: 0;
-      }
       .user {
         width: 4.29rem;
         height: .53rem;
         line-height: .53rem;
         overflow: hidden;
         white-space: nowrap;
-        position: absolute;
-        bottom: .72rem;
+        // position: absolute;
+        // bottom: 0;
         // left: 0;
         .hs-cf;
         .avatar {

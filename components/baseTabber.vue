@@ -1,8 +1,8 @@
 <template>
   <footer class="hs-tabber">
-    <nuxt-link :to="item.link" class="item" :class="item.isActive ? 'active' : ''" v-for="(item, index) in tabber_item" :key="index">
+    <nuxt-link :to="item.link" class="item" v-for="(item, index) in tabber" :key="index" exact>
       <span class="icon">
-        <i class="hs-icon" :class="item.name"></i>
+        <i class="hs-icon" :class="item.icon"></i>
         <span class="dot" v-if="item.dot"></span>
       </span>
       <span class="text">{{ item.title }}</span>
@@ -18,28 +18,32 @@ export default {
     return {
       tabber: [
         {
-          name: 'home',
+          name: 'index',
+          icon: 'home',
           title: '黑市',
           link: '/',
           isActive: false,
           dot: false
         },
         {
-          name: 'culture',
+          name: 'categories',
+          icon: 'culture',
           title: '分类',
-          link: '/categories',
+          link: '/categories/category',
           isActive: false,
           dot: false
         },
         {
-          name: 'shopping',
+          name: 'cart',
+          icon: 'shopping',
           title: '购物车',
           link: '/cart',
           isActive: false,
           dot: false
         },
         {
-          name: 'explore',
+          name: 'message',
+          icon: 'explore',
           title: '消息',
           link: '/message',
           isActive: false,
@@ -47,6 +51,7 @@ export default {
         },
         {
           name: 'me',
+          icon: 'me',
           title: '我的',
           link: '/me',
           isActive: false,
@@ -56,17 +61,17 @@ export default {
     }
   },
   computed: {
-    tabber_item() {
-      let temp_array = []
-      _.each(this.tabber, (item, index) => {
-        // console.log(this.$route)
-        // if(this.$route.name.indexOf(item.name) === 1) {
-        //   item.isActive = true
-        // }
-        temp_array.push(item)
-      })
-      return temp_array
-    }
+    // tabber_item() {
+    //   let temp_array = []
+    //   console.log(this.$route.fullPath)
+    //   _.each(this.tabber, (item, index) => {
+    //     if(this.$route.fullPath.indexOf(item.name) === 1) {
+    //       item.isActive = true
+    //     }
+    //     temp_array.push(item)
+    //   })
+    //   return temp_array
+    // }
   }
 }
 </script>
@@ -93,9 +98,9 @@ export default {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      color: #333;
-      &.active {
-        color: #ae2121;
+      color: #C6C6C6;
+      &.active, &.nuxt-link-active {
+        color: #AE2121;
       }
       .icon {
         height: 0.58rem;
@@ -117,19 +122,19 @@ export default {
           margin-left: -.12rem;
         }
         .home:before {
-          content: "\e645";
+          content: "\e66d";
         }
         .culture:before {
-          content: "\e646";
+          content: "\e664";
         }
         .me:before {
-          content: "\e64a";
+          content: "\e66a";
         }
         .explore:before {
-          content: "\e64b";
+          content: "\e669";
         }
         .shopping:before {
-          content: "\e648";
+          content: "\e668";
         }
       }
       .text {

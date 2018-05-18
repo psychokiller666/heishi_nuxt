@@ -13,7 +13,7 @@
         </span>
         <span class="text">购物车</span>
       </nuxt-link>
-      <nuxt-link to="/" class="item">
+      <nuxt-link :to="{ name: 'user-id', params: { id: seller.id } }" class="item">
         <span class="icon">
           <i class="hs-icon stores"></i>
         </span>
@@ -21,8 +21,7 @@
       </nuxt-link>
     </div>
     <div class="btn">
-      <button class="addcart-btn">加入购物车</button>
-      <button class="buy-btn">买他妈的</button>
+      <slot></slot>
     </div>
   </footer>
 </template>
@@ -31,45 +30,16 @@
 import _ from 'underscore'
 
 export default {
-  data () {
-    return {
-      tabber: [
-        {
-          name: 'home',
-          title: '黑市',
-          link: '/',
-          isActive: false,
-          dot: false
-        },
-        {
-          name: 'shopping',
-          title: '购物车',
-          link: '/cart',
-          isActive: false,
-          dot: false
-        },
-        {
-          name: 'explore',
-          title: '消息',
-          link: '/message',
-          isActive: false,
-          dot: false
-        }
-      ]
+  props: {
+    seller: {
+      type: Object
     }
   },
-  computed: {
-    tabber_item() {
-      let temp_array = []
-      _.each(this.tabber, (item, index) => {
-        // console.log(this.$route)
-        // if(this.$route.name.indexOf(item.name) === 1) {
-        //   item.isActive = true
-        // }
-        temp_array.push(item)
-      })
-      return temp_array
-    }
+  mounted () {
+    // console.log(this.$route.params.id)
+    // this.$refs.rewardPopup.show()
+    // console.log(this.seller)
+    document.getElementsByClassName('hs-page')[0].appendChild(this.$el)
   }
 }
 </script>
@@ -91,6 +61,7 @@ export default {
     border-top: 0.013rem solid #e8e8e8;
     box-sizing: border-box;
     z-index: 11;
+
     .btn {
       height: 1.3rem;
       display: flex;
@@ -103,17 +74,8 @@ export default {
         text-align: center;
         .font-dpr(15px);
         border: none;
-      }
-      .addcart-btn {
-        width: 50%;
-        background-color: #fff;
-        font-weight: 700;
-      }
-      .buy-btn {
-        width: 50%;
-        background-color: #ae2121;
-        color: #fff;
-        font-weight: 400;
+        // border-top: 0.013rem solid #e8e8e8;
+        box-sizing: border-box;
       }
     }
     & > .icon {

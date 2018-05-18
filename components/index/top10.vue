@@ -2,7 +2,7 @@
   <div class="index-top10">
     <baseTitle title="本周TOP10" label="图层卖的贼鸡儿好的" class="header_hack" />
     <div class="list" ref="scroll">
-      <div class="item" v-for="(item, index) in item_top10" :key="index" :style="[transformIndex(index), transform(index)]" @webkit-transition-end="onTransitionEnd(index)"
+      <div class="item" v-for="(item, index) in data" :key="index" :style="[transformIndex(index), transform(index)]" @webkit-transition-end="onTransitionEnd(index)"
       @transitionend="onTransitionEnd(index)">
         <div class="image" v-lazy:background-image.container="item.image + '@640w_1l'" ></div>
         <div class="text">
@@ -24,7 +24,7 @@ import baseTitle from '~/components/baseTitle.vue'
 // https://github.com/warpcgd/vue-tantan-stack/blob/v2.0/src/components/stack.vue
 export default {
   props: {
-    item_top10: {
+    data: {
       type: Array
     },
     visible: {
@@ -67,7 +67,7 @@ export default {
     inStack (index, currentPage) {
       let stack = []
       let visible = this.visible
-      let length = this.item_top10.length
+      let length = this.data.length
       for (let i = 0; i < visible; i++) {
         if (currentPage + i < length) {
           stack.push(currentPage + i)
@@ -84,7 +84,7 @@ export default {
       this.temporaryData.lastRotate = this.temporaryData.rotate
       this.temporaryData.lastZindex = 20
       // 循环currentPage
-      this.temporaryData.currentPage = this.temporaryData.currentPage === this.item_top10.length - 1 ? 0 : this.temporaryData.currentPage + 1
+      this.temporaryData.currentPage = this.temporaryData.currentPage === this.data.length - 1 ? 0 : this.temporaryData.currentPage + 1
       // currentPage切换，整体dom进行变化，把第一层滑动置最低
       this.$nextTick(() => {
         this.temporaryData.poswidth = 0
@@ -94,7 +94,7 @@ export default {
       })
     },
     onTransitionEnd (index) {
-      let lastPage = this.temporaryData.currentPage === 0 ? this.item_top10.length - 1 : this.temporaryData.currentPage - 1
+      let lastPage = this.temporaryData.currentPage === 0 ? this.data.length - 1 : this.temporaryData.currentPage - 1
       // dom发生变化正在执行的动画滑动序列已经变为上一层
       if (this.temporaryData.swipe && index === lastPage) {
         this.temporaryData.animation = true
@@ -128,8 +128,8 @@ export default {
     // 非首页样式切换
     transform (index) {
       let currentPage = this.current
-      let length = this.item_top10.length
-      let lastPage = currentPage === 0 ? this.item_top10.length - 1 : currentPage - 1
+      let length = this.data.length
+      let lastPage = currentPage === 0 ? this.data.length - 1 : currentPage - 1
       let style = {}
       let visible = this.visible
       if (index === this.current) {

@@ -29,7 +29,7 @@
           },
           {
             title: '关注',
-            link: '/index/follow'
+            link: '/index/follow/bully'
           },
           {
             title: '特卖',

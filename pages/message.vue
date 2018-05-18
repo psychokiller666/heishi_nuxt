@@ -6,6 +6,6 @@
 
 <script>
 export default {
-
+  layout: 'indexLayout'
 }
 </script>

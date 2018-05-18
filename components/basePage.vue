@@ -36,10 +36,10 @@
   }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 html {
-  color: #202123;
   .hs-page {
+    color: #202123;
     background-color: #f0f2f5;
     height: 100vh;
     width: 100%;
@@ -52,11 +52,11 @@ html {
     width: 10rem;
     background-color: #fff;
     box-shadow: 0 .03rem .13rem #ddd;
-    overflow-x: hidden;
+    overflow: hidden;
     margin: 0 auto;
   }
   // a标签
-  a, html a, html a:link, a:active, ins {
+  a, a:link, a:active, a:hover, ins {
     color: #202123;
     text-decoration: none;
   }

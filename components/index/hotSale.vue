@@ -1,8 +1,8 @@
 <template>
   <div class="index-hot-sale">
     <baseTitle title="热门" label="我都买不到你知道么" class="header_hack" />
-    <cube-slide :data="hotsale_item" :showDots="false">
-      <cube-slide-item class="item" v-for="item in hotsale_item" :key="item.id">
+    <cube-slide :data="data" :showDots="false">
+      <cube-slide-item class="item" v-for="item in data" :key="item.id">
         <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }" class="image" v-lazy:background-image.container="item.cover + '@640w_1l'"></nuxt-link>
         <div class="text">
           <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }">
@@ -27,7 +27,7 @@ import baseTitle from '~/components/baseTitle.vue'
 
 export default {
   props: {
-    hotsale_item: {
+    data: {
       type: Array
     }
   },

@@ -1,22 +1,24 @@
 <template>
   <div class="index-posts-list">
     <slot name="header"></slot>
-    <div class="item" v-for="item in postslist_item" :key="item.id">
-      <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }" class="image" v-lazy:background-image.container="item.cover + '@640w_1l'"></nuxt-link>
-      <div class="text">
-        <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }">
-          <div class="title">{{ item.title }}</div>
-        </nuxt-link>
-        <nuxt-link to="/" class="user">
-          <div class="avatar" v-lazy:background-image.container="item.user_avatar"></div>
-          <span class="nickname">{{ item.user_name }}</span>
-        </nuxt-link>
-        <nuxt-link to="/" class="label" v-for="label in item.characteristics" :key="label">
-          {{ label }}
-        </nuxt-link>
+    <div class="list">
+      <div class="item" v-for="item in data" :key="item.id">
+        <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }" class="image" v-lazy:background-image.container="item.cover + '@640w_1l'"></nuxt-link>
+        <div class="text">
+          <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }">
+            <div class="title">{{ item.title }}</div>
+          </nuxt-link>
+          <nuxt-link to="/" class="user">
+            <div class="avatar" v-lazy:background-image.container="item.user_avatar"></div>
+            <span class="nickname">{{ item.user_name }}</span>
+          </nuxt-link>
+          <nuxt-link to="/" class="label" v-for="label in item.characteristics" :key="label">
+            {{ label }}
+          </nuxt-link>
+        </div>
       </div>
     </div>
-    <div class="pages" v-show="pages >= 5">
+    <div class="pages" v-show="pages >= show_page">
       <nuxt-link to="/" class="item left"></nuxt-link>
       <nuxt-link to="/" v-for="(item, index) in pages_array" :key="index" :class="pages == item? 'item active':'item'">{{ item }}</nuxt-link>
       <nuxt-link to="/" class="item right"></nuxt-link>
@@ -28,7 +30,7 @@
 
 export default {
   props: {
-    postslist_item: {
+    data: {
       type: Array
     },
     pages: {
@@ -77,82 +79,70 @@ export default {
 .index-posts-list {
   margin-top: .53rem;
   padding: 0 .4rem;
-  .header {
-    margin-bottom: .4rem;
-    .title {
-      line-height: 1em;
-      .font-dpr(18px);
-      font-weight: 700;
-      margin-bottom: .16rem;
-    }
-    .label {
-      line-height: 1em;
-      .font-dpr(12px);
-      color: #8E8E8E;
-    }
-  }
-  >.item {
-    border-bottom: .013rem solid #E8E8E8;
-    margin-bottom: .53rem;
-    &:last-child {
-      margin-bottom: 0;
-      border: none;
-    }
-    .image {
-      display: block;
-      border-radius: .16rem;
-      width: 100%;
-      height: 4.69rem;
-      border: none;
-      .hs-cover;
-    }
-    .text {
-      height: 1.89rem;
-      padding: .32rem 0;
-      position: relative;
-      box-sizing: border-box;
-      .title {
-        overflow: hidden;
-        text-align: left;
-        line-height: 1em;
-        .font-dpr(15px);
-        color: #202123;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+  .list {
+    & >.item {
+      border-bottom: .013rem solid #E8E8E8;
+      margin-bottom: .53rem;
+      &:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
       }
-      .user {
-        position: absolute;
-        left: 0;
-        bottom: .32rem;
-        line-height: .53rem;
-        overflow: hidden;
-        white-space: nowrap;
-        .hs-cf;
-        .avatar {
-          width: .53rem;
-          height: .53rem;
-          .hs-avatar;
-          .hs-fl;
+      .image {
+        display: block;
+        border-radius: .16rem;
+        width: 100%;
+        height: 4.69rem;
+        border: none;
+        .hs-cover;
+      }
+      .text {
+        height: 1.89rem;
+        padding: .32rem 0;
+        position: relative;
+        box-sizing: border-box;
+        .title {
+          overflow: hidden;
+          text-align: left;
+          line-height: 1em;
+          .font-dpr(15px);
+          color: #202123;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
-        .nickname {
-          margin-left: .21rem;
-          line-height: .6rem;
-          .font-dpr(14px);
+        .user {
+          position: absolute;
+          left: 0;
+          bottom: .32rem;
+          line-height: .53rem;
+          overflow: hidden;
+          white-space: nowrap;
+          .hs-cf;
+          .avatar {
+            width: .53rem;
+            height: .53rem;
+            .hs-avatar;
+            .hs-fl;
+          }
+          .nickname {
+            margin-left: .21rem;
+            line-height: .6rem;
+            .font-dpr(14px);
+            color: #8E8E8E;
+            .hs-fl;
+          }
+        }
+        .label {
+          position: absolute;
+          right: 0;
+          bottom: .32rem;
           color: #8E8E8E;
-          .hs-fl;
+          .font-dpr(12px);
+          margin: 0 0.16rem 0 0;
+          padding: 0.08rem 0.133rem;
+          border-radius: 0.107rem;
+          background: #F5F5F5;
+          display: inline-block;
         }
-      }
-      .label {
-        position: absolute;
-        right: 0;
-        bottom: .32rem;
-        color: #8E8E8E;
-        .font-dpr(12px);
-        margin: 0 0.16rem 0 0;
-        padding: 0.08rem 0.133rem;
-        border-radius: 0.107rem;
-        background: #F5F5F5;
-        display: inline-block;
       }
     }
   }
@@ -160,6 +150,7 @@ export default {
     height: 1rem;
     display: flex;
     justify-content: center;
+    margin-top: .4rem;
     .item {
       text-align: center;
       width: 1.17rem;

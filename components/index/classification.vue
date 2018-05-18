@@ -1,7 +1,7 @@
 <template>
   <div class="index-classification">
-    <cube-scroll :data="classification_item" direction="horizontal" ref="classification">
-      <nuxt-link to="/" class="item" v-for="(item, index) in classification_item" :key="index">
+    <cube-scroll :data="data" direction="horizontal" ref="classification">
+      <nuxt-link to="/" class="item" v-for="(item, index) in data" :key="index">
         <div class="image" v-lazy:background-image.container="item.image"></div>
         <div class="label">{{ item.title }}</div>
       </nuxt-link>
@@ -12,14 +12,14 @@
 <script>
 export default {
   props: {
-    classification_item: {
+    data: {
       type: Array
     }
   },
   computed: {
     // 计算横向滚动元素宽度
     itemWidth() {
-      return this.classification_item.length * (2.75 + 0.27) + 0.4 - 0.27 + "rem";
+      return this.data.length * (2.75 + 0.27) + 0.4 - 0.27 + "rem";
     }
   },
   mounted () {

@@ -1,8 +1,9 @@
 <template>
-  <basePage type="article" bottom="1.3rem">
+  <basePage type="index" bottom="1.3rem">
     <transition name="page-move" slot="content">
       <nuxt class="hs-view"></nuxt>
     </transition>
+    <baseTabber slot="tabber" />
   </basePage>
 </template>
 
@@ -22,11 +23,12 @@
 </style>
 
 <script>
+import baseTabber from '~/components/baseTabber.vue'
 import basePage from '~/components/basePage.vue'
 
 export default {
   components: {
-    basePage
+    baseTabber, basePage
   }
 }
 </script>

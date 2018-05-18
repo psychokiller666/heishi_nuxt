@@ -1,21 +1,21 @@
 <template>
-  <cube-scroll :data="goodslist" @pulling-up="getgoodsList" ref="scroll" :options="options">
+  <cube-scroll class="index" :data="goodslist" @pulling-up="getgoodsList" ref="scroll" :options="options" :scroll-events="['scroll']">
     <!-- 头图 -->
-    <Banner :banner_item="banner" />
+    <Banner :data="banner" />
     <!-- 大专题 -->
-    <Classification :classification_item="classification" />
+    <Classification :data="classification" />
     <!-- 本周TOP10 -->
-    <top10 :item_top10="topten" />
+    <top10 :data="topten" />
     <!-- 新品 -->
-    <newPosts :newposts_item="newposts" />
+    <newPosts :data="newposts" />
     <!-- 热卖 -->
-    <hotSale :hotsale_item="hotsale" />
+    <hotSale :data="hotsale" />
     <!-- 分类 -->
-    <Categories :categories_item="categories" />
-    <postsList :postslist_item="goodslist" :pages="goodslistpage" />
-    <div class="scrollto">
-      <button @click="scrollTo">回到顶部</button>
-    </div>
+    <Categories :data="categories" />
+    <postsList :data="goodslist" :pages="goodslistpage" />
+    <scrollTo :show="scrolltoVisible">
+      <button class="scrollto-btn" @click="scrollTo">顶部</button>
+    </scrollTo>
   </cube-scroll>
 </template>
 
@@ -28,6 +28,7 @@ import hotSale from '~/components/index/hotSale.vue'
 import Categories from '~/components/index/categories.vue'
 import postsList from '~/components/index/postsList.vue'
 import top10 from '~/components/index/top10.vue'
+import scrollTo from '~/components/basescrollTo.vue'
 
 import { get_Avatar } from '~/utils/util.js'
 
@@ -90,15 +91,9 @@ export default {
       // 分页
       goodslistpage: 2,
       options: {
-        pullUpLoad: true,
-        // pullDownRefresh: true
+        pullUpLoad: true
       },
-      scrollToshow: false
-    }
-  },
-  watch: {
-    scrollToshow: function(val) {
-      console.log(this.scroll)
+      scrolltoVisible: false
     }
   },
   methods: {
@@ -124,22 +119,47 @@ export default {
     },
     scrollTo () {
       this.$refs.scroll.scroll && this.$refs.scroll.scroll.scrollTo(0, 0, 700)
+    },
+    scrolltoInit () {
+      let tempHeight = this.$refs.scroll.$el.clientHeight * 2
+
+      this.$refs.scroll.$on('scroll', object => {
+        if (Math.abs(object.y) > tempHeight) {
+          this.scrolltoVisible = true
+        } else {
+          this.scrolltoVisible = false
+        }
+      })
     }
   },
   mounted () {
-    // this.scrollTo()
-    this.$refs.scroll.$on(this.$refs.scroll.bubbleY, (a) => {
-      console.log(a)
-    })
-    // console.log(this.$refs.scroll.bubbleY)
+    this.scrolltoInit()
+
+    // console.log(this.$refs.scroll)
   },
   components: {
-    Banner, Classification, newPosts, hotSale, Categories, postsList, top10, allStreamer
+    Banner, Classification, newPosts, hotSale, Categories, postsList, top10, allStreamer, scrollTo
   }
 }
 </script>
 
 <style lang="less" scoped>
-@import '../assets/less/common.less';
+  @import '../assets/less/common.less';
 
+  .index {
+    .scrollto-btn {
+      position: absolute;
+      right: .5rem;
+      bottom: 1.8rem;
+      .font-dpr(14px);
+      width: 1rem;
+      height: 1rem;
+      // line-height: 1rem;
+      border-radius: 100%;
+      background-color: rpga(0 ,0 ,0 ,0.8);
+      border: none;
+      text-align: center;
+      color: #333;
+    }
+  }
 </style>

@@ -1,8 +1,10 @@
 <template>
-  <basePage type="article" bottom="1.3rem">
+  <basePage type="categories" top="1.2rem" bottom="1.3rem">
+    <!-- <navber slot="header" /> -->
     <transition name="page-move" slot="content">
       <nuxt class="hs-view"></nuxt>
     </transition>
+    <baseTabber slot="tabber" />
   </basePage>
 </template>
 
@@ -10,6 +12,7 @@
 .hs-view {
   box-sizing: border-box;
   transform: translate3d(0, 0, 0);
+  overflow: hidden;
 }
 
 .page-move-enter, .page-move-leave-active {
@@ -22,11 +25,13 @@
 </style>
 
 <script>
+import navber from '~/components/categories/navber.vue'
+import baseTabber from '~/components/baseTabber.vue'
 import basePage from '~/components/basePage.vue'
 
 export default {
   components: {
-    basePage
+    navber, baseTabber, basePage
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <Popup type="search-popup" :center="false" addbodyend ref="popup">
+  <Popup type="search-popup" position="top" addbodyend ref="popup">
     <!-- <button @click="hide">关闭</button> -->
     <div class="box">
       <div class="search">

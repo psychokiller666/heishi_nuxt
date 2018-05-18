@@ -11,7 +11,7 @@
       </cube-scroll>
     </div>
     <!-- 当下最热 -->
-    <postsList :postslist_item="goodslist" :pages="goodslistpage">
+    <postsList :data="goodslist" :pages="goodslistpage">
       <baseTitle slot="header" title="当下最热" label="看看别人偷摸买了啥" />
     </postsList>
   </cube-scroll>
@@ -37,10 +37,9 @@ export default {
         size: 10
       }
     })
-
     return {
       ranking_item: ranking_item.data.result,
-      goodslist: get_Avatar(goodslist.data.result, 'user_avatar')
+      goodslist: goodslist.data.result
     }
   },
   computed: {
