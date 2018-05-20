@@ -2,7 +2,7 @@
   <div class="index-posts-list">
     <slot name="header"></slot>
     <div class="list">
-      <div class="item" v-for="item in data" :key="item.id">
+      <div class="item" v-for="item in data" :track-by="item.id" :key="item.id">
         <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }" class="image" v-lazy:background-image.container="item.cover + '@640w_1l'"></nuxt-link>
         <div class="text">
           <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }">

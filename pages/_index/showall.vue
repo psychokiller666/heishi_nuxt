@@ -71,9 +71,9 @@ export default {
           size: 10
         }
       }).then(res => {
-        if (res.data.totalPages != this.goodslistpage) {
+        if (res.data.totalPages >= this.goodslistpage) {
           this.goodslist = this.goodslist.concat(res.data.result)
-          this.goodslistpage = this.goodslistpage + 1
+          this.goodslistpage++
         } else {
           this.$refs.scroll.forceUpdate()
         }

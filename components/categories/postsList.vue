@@ -2,18 +2,18 @@
   <div class="index-new-post">
     <!-- <baseTitle title="新品" label="还是热乎的" /> -->
     <div class="item" v-for="item in data" :key="item.id">
-        <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }" class="image" v-lazy:background-image.container="item.cover"></nuxt-link>
-        <div class="text">
-          <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }">
-            <div class="title">{{ item.title }}</div>
-            <!-- <div class="label" v-for="label in item.characteristics" :key="label">{{ label }}</div> -->
-          </nuxt-link>
-          <nuxt-link to="/" class="user">
-            <div class="avatar" v-lazy:background-image.container="item.user_avatar"></div>
-            <span class="nickname">{{ item.user_name }}</span>
-          </nuxt-link>
-          <div class="price">{{ aaaa }}</div>
-        </div>
+      <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }" class="image" v-lazy:background-image.container="item.cover"></nuxt-link>
+      <div class="text">
+        <nuxt-link :to="{ name: 'detail-id', params: { id: item.id } }">
+          <div class="title">{{ item.title }}</div>
+          <!-- <div class="label" v-for="label in item.characteristics" :key="label">{{ label }}</div> -->
+        </nuxt-link>
+        <nuxt-link to="/" class="user">
+          <div class="avatar" v-lazy:background-image.container="item.user_avatar"></div>
+          <span class="nickname">{{ item.user_name }}</span>
+        </nuxt-link>
+        <div class="price">{{ aaaa }}</div>
+      </div>
     </div>
   </div>
 </template>

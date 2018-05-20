@@ -16,6 +16,16 @@
     <scrollTo :show="scrolltoVisible">
       <button class="scrollto-btn" @click="scrollTo">顶部</button>
     </scrollTo>
+    <template slot="pullup" slot-scope="props">
+      <div class="cube-pullup-wrapper" v-if="props.pullUpLoad">
+        <div class="before-trigger" v-if="!props.isPullUpLoad">
+          加载完成
+        </div>
+        <div class="after-trigger" v-else>
+          正在加载
+        </div>
+      </div>
+    </template>
   </cube-scroll>
 </template>
 
@@ -29,9 +39,6 @@ import Categories from '~/components/index/categories.vue'
 import postsList from '~/components/index/postsList.vue'
 import top10 from '~/components/index/top10.vue'
 import scrollTo from '~/components/basescrollTo.vue'
-
-import { get_Avatar } from '~/utils/util.js'
-
 
 export default {
   async asyncData ({app}) {
@@ -79,10 +86,10 @@ export default {
     return {
       banner: banner.data,
       classification: classification.data,
-      newposts: get_Avatar(newposts.data.result, 'user_avatar'),
-      hotsale: get_Avatar(hotsale.data.result, 'user_avatar'),
+      newposts: newposts.data.result,
+      hotsale: hotsale.data.result,
       categories: categories.data,
-      goodslist: get_Avatar(goodslist.data.result, 'user_avatar'),
+      goodslist: goodslist.data.result,
       topten: top10.data
     };
   },
@@ -91,7 +98,12 @@ export default {
       // 分页
       goodslistpage: 2,
       options: {
-        pullUpLoad: true
+        pullUpLoad: {
+          txt: {
+            more: '加载更多',
+            noMore: '没有更多了'
+          }
+        }
       },
       scrolltoVisible: false
     }
@@ -109,9 +121,9 @@ export default {
           size: 10
         }
       }).then(res => {
-        if (res.data.totalPages != this.goodslistpage) {
+        if (res.data.totalPages >= this.goodslistpage) {
           this.goodslist = this.goodslist.concat(res.data.result)
-          this.goodslistpage = this.goodslistpage + 1
+          this.goodslistpage++
         } else {
           this.$refs.scroll.forceUpdate()
         }

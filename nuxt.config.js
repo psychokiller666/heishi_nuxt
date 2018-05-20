@@ -52,7 +52,19 @@ module.exports = {
   axios: {
     baseURL: config.baseUrl,
     browserBaseURL: config.baseUrl,
-    proxy: true
+    proxy: true,
+    responseInterceptor: (res, ctx) => {
+      console.log('ssss')
+    if (res.data.status === 0) {
+      return res
+    } else {
+      console.log('dddd')
+      ctx.error({
+        statusCode: 404,
+        message: res.data.info
+      })
+    }
+  }
     // retry: true,
     // debug: true
     // debug: true

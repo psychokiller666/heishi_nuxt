@@ -25,6 +25,7 @@ export default {
           tag: params.tag
         }
       })
+      console.log(goods)
       return {
         goods: goods.data.data.item_list
       }

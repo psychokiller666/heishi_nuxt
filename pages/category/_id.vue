@@ -44,7 +44,7 @@ export default {
     // 赋予 cube-scroll 宽度。参考：https://didi.github.io/cube-ui/#/zh-CN/docs/scroll
     // * 横向滚动：内容元素的宽度必须大于容器元素。由于在默认情况下，子元素的宽度不会超过容器元素，所以需要给 Scroll 组件的 .cube-scroll-content 元素设置大于 .cube-scroll-wrapper 的宽度。
     this.$refs.tags.$el.children[0].style.width = this.itemWidth;
-    console.log(this)
+    // console.log(this)
   },
   components: {
     baseGuessLike

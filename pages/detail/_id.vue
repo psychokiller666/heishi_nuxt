@@ -105,12 +105,19 @@ export default {
     }
   },
   layout: 'articleLayout',
-  async asyncData ({app, params}) {
+  async asyncData ({app, params, error}) {
     const res = await app.$axios.$get('appv3_1/goods/' + params.id)
-    // console.log(res)
-    return {
-      article: res.data
+    if(res.status === 1) {
+      return {
+        article: res.data
+      }
+    } else {
+      return error({
+        statusCode: res.code,
+        message: res.info
+      })
     }
+
   },
   components: {
     guessLike, comment, seller, Popup, Tabber, Sku, baseTitle

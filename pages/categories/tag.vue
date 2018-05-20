@@ -3,7 +3,7 @@
     <div class="banner">
     </div>
     <div class="list">
-      <nuxt-link to="/" class="item" v-for="(item, index) in tags" :key="index">
+      <nuxt-link :to="{ name: 'category-id-tag', params: { id: item.id, tag: item.name } }" class="item" v-for="(item, index) in tags" :key="index">
         <div class="image" v-lazy:background-image.container="item.image"></div>
       </nuxt-link>
     </div>
@@ -14,13 +14,10 @@
 export default {
   layout: 'categoriesLayout',
   async asyncData ({app}) {
-    const tags = await app.$axios.$get('appv3/category/tags', {
-      params: {
-        id: 1
-      }
-    })
+    const tags = await app.$axios.$get('appv3/category/index')
+    // console.log(tags.data.modules[1].data)
     return {
-      tags: tags.data
+      tags: tags.data.modules[1].data
     }
   }
 }
