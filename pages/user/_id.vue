@@ -20,17 +20,12 @@
         <nuxt-link to="/" class="message-btn">私信</nuxt-link>
       </div>
     </div>
-    <div class="user-goods-list">
-      <nuxt-link to="/" class="item" v-for="item in goodslist" :key="item.id">
-        <div class="image" v-lazy:background-image.container="item.cover + '@640w_1l'"></div>
-        <div class="title">{{ item.post_title }}</div>
-      </nuxt-link>
-    </div>
+    <twoColPostsList :data="goodslist" />
   </cube-scroll>
 </template>
 
 <script>
-import comment from '~/components/article/comment.vue'
+import twoColPostsList from '~/components/twoColPostsList.vue'
 
 export default {
   validate ({ params }) {
@@ -81,6 +76,7 @@ export default {
     }
   },
   components: {
+    twoColPostsList
   }
 }
 </script>
@@ -170,35 +166,4 @@ export default {
       }
     }
   }
-  .user-goods-list {
-
-    display: flex;
-    // flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding: .4rem;
-    .item {
-      display: block;
-      background-color: #fff;
-      box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.08);
-      border-radius: .16rem;
-      width: 4.4rem;
-      box-sizing: border-box;
-      margin-bottom: .4rem;
-      overflow: hidden;
-      .image {
-        width: 4.4rem;
-        height: 2.24rem;
-        border-radius: .16rem .16rem 0 0;
-      }
-      .title {
-        .font-dpr(14px);
-        padding: .27rem;
-        overflow: hidden;
-        box-sizing: border-box;
-        width: 4.4rem;
-      }
-    }
-  }
-
 </style>

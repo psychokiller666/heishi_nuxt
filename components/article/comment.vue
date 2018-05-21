@@ -218,6 +218,9 @@ export default {
         justify-content: space-between;
         padding: .4rem 0;
         border-bottom: .013rem solid rgba(153,153,153,.3);
+        &:last-child {
+          border-bottom: 0;
+        }
         .avatar {
           width: 1rem;
           height: 1rem;

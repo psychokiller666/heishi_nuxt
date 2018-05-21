@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="item wechat-login">
-      <button>微信登陆</button>
+      <button @click="getCode">微信登陆</button>
     </div>
     <div class="item pact">
       <div class="label">登录即同意公路商店</div>

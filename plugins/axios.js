@@ -7,12 +7,7 @@ export default function ({ app, $axios, store, redirect, route }) {
     // console.log(response)
   })
   $axios.onError(error => {
-    switch (error.response && error.response.status) {
-      case 401:
-      // console.log('ss为什么没有执行redirect')
-        redirect('/login')
-      break;
-    }
+
   })
 
 }

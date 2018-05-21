@@ -1,5 +1,6 @@
 <template>
   <div class="index-banner">
+    <slot name="header"></slot>
     <cube-slide :data="data">
       <cube-slide-item class="item" v-for="(item, index) in data" :key="index">
         <nuxt-link to="/" v-lazy:background-image.container="item.image + '@640w_1l'"></nuxt-link>

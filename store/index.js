@@ -25,7 +25,7 @@ export const mutations = {
 export const actions = {
   nuxtServerInit: (store, { params, route, req }) => {
       // console.log(store)
-      store.commit('setApiVersion')
+      // store.commit('setApiVersion')
   },
   async getMessagesCounts ({ commit }) {
     // const counts = await this.$axios.get('appv4/messages/counts')

@@ -2,7 +2,7 @@
   <div class="index-categories">
     <baseTitle title="热门分类" label="该在哪儿的都去哪儿待着" />
     <div class="list">
-      <nuxt-link to="/" class="item" v-for="(item, index) in data" :key="index">
+      <nuxt-link :to="{ name: 'category-id-tag', params: { id: item.id } }" class="item" v-for="(item, index) in data" :key="index">
         <img class="image" v-lazy="item.home_picture" />
         <div class="title">{{ item.name }}</div>
       </nuxt-link>

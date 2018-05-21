@@ -1,7 +1,7 @@
 <template>
   <div class="index-categorie">
     <navber />
-    <nuxt class="categorie-content"></nuxt>
+    <nuxt-child class="categorie-content" />
   </div>
 </template>
 

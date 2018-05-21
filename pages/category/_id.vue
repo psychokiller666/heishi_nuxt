@@ -1,5 +1,5 @@
 <template>
-  <cube-scroll>
+  <cube-scroll :data="goodslist" @pulling-up="pullingUp" :options="options" ref="scroll">
     <div class="tags">
       <cube-scroll :data="tags" direction="horizontal" ref="tags">
         <nuxt-link :to="{ name: 'category-id-tag', params: { id: categoryId, tag: item.name } }" class="item" v-for="(item, index) in tags" :key="index" exact>
@@ -8,7 +8,9 @@
         </nuxt-link>
       </cube-scroll>
     </div>
-    <nuxt class="category-id-tag-content"></nuxt>
+    <div class="category-id-tag-content">
+      <nuxt-child :data="goodslist" />
+    </div>
   </cube-scroll>
 </template>
 
@@ -16,6 +18,21 @@
 import baseGuessLike from '~/components/baseGuessLike.vue'
 
 export default {
+  data () {
+    return {
+      goodslist: [],
+      goodslistpage: 1,
+      options: {
+        pullUpLoad: {
+          txt: {
+            more: '加载更多',
+            noMore: '没有更多了'
+          }
+        }
+      },
+      scrolltoVisible: false
+    }
+  },
   layout: 'indexLayout',
   validate ({ params }) {
     return (!!params.id && !Object.is(Number(params.id), NaN))
@@ -31,6 +48,9 @@ export default {
       tags: category.data
     }
   },
+  watch: {
+    '$route': 'tabInit'
+  },
   computed: {
     // 计算横向滚动元素宽度
     itemWidth() {
@@ -38,13 +58,73 @@ export default {
     }
   },
   methods: {
-
+    // 初始化
+    Init () {
+      this.pageInit()
+      this.getFatherGoods()
+    },
+    // 初始化tab
+    tabInit () {
+      this.pageInit()
+      this.getChild()
+    },
+    // 分页初始化
+    pageInit () {
+      this.goodslist = []
+      this.goodslistpage = 1
+    },
+    // 获取父级商品列表
+    async getFatherGoods () {
+      await this.$axios.$get('appv3/category/posts', {
+        params: {
+          category_id: this.$route.params.id,
+          cur_page: this.goodslistpage,
+          page_size: 10
+        }
+      }).then(res => {
+        if (res.data.data.item_list.totalPages >= this.goodslistpage) {
+          this.goodslist = this.goodslist.concat(res.data.data.item_list.result)
+          this.goodslistpage++
+        } else {
+          this.$refs.scroll.forceUpdate()
+          return false
+        }
+      })
+    },
+    // 获取子级商品列表
+    async getChild () {
+      await this.$axios.$get('appv3/tag/posts', {
+        params: {
+          category_id: this.$route.params.id,
+          cur_page: this.goodslistpage,
+          tag: this.$route.params.tag,
+          page_size: 10
+        }
+      }).then(res => {
+        // console.log(res)
+        if (res.data.data.item_list.totalPages >= this.goodslistpage) {
+          this.goodslist = this.goodslist.concat(res.data.data.item_list.result)
+          this.goodslistpage++
+        } else {
+          this.$refs.scroll.forceUpdate()
+          return false
+        }
+      })
+    },
+    // 加拉加载
+    pullingUp () {
+      if (this.$route.params.tag === undefined) {
+        this.getFatherGoods()
+      } else {
+        this.getChild()
+      }
+    }
   },
   mounted () {
     // 赋予 cube-scroll 宽度。参考：https://didi.github.io/cube-ui/#/zh-CN/docs/scroll
     // * 横向滚动：内容元素的宽度必须大于容器元素。由于在默认情况下，子元素的宽度不会超过容器元素，所以需要给 Scroll 组件的 .cube-scroll-content 元素设置大于 .cube-scroll-wrapper 的宽度。
     this.$refs.tags.$el.children[0].style.width = this.itemWidth;
-    // console.log(this)
+    this.Init()
   },
   components: {
     baseGuessLike
