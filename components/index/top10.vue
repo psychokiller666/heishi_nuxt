@@ -2,11 +2,10 @@
   <div class="index-top10">
     <baseTitle title="本周TOP10" label="图层卖的贼鸡儿好的" class="header_hack" />
     <div class="list" ref="scroll">
-      <div class="item" v-for="(item, index) in data" :key="index" :style="[transformIndex(index), transform(index)]" @webkit-transition-end="onTransitionEnd(index)"
-      @transitionend="onTransitionEnd(index)">
+      <div class="item" v-for="(item, index) in data" :key="index" :style="[transformOne(index),transformTwo(index),transformThree(index),transform(index)]">
         <div class="image" v-lazy:background-image.container="item.image + '@640w_1l'" ></div>
         <div class="text">
-          <div class="title">如果捡肥皂都长这样长这样 长这样</div>
+          <div class="title">如果捡肥皂都长这样长这样 长这样{{index}}</div>
           <div class="label">
             <span>夜店蹦迪</span>
           </div>
@@ -38,24 +37,19 @@ export default {
   },
   data () {
     return {
-      // basicdata数据包含组件基本数据
-      basicdata: {
-        start: {}, // 记录起始位置
-        end: {}, // 记录终点位置
-        currentPage: 0 // 默认首图的序列
-      },
-      // temporaryData数据包含组件临时数据
       temporaryData: {
         offsetY: '',
         poswidth: 0,
-        posheight: 0.54,
-        lastPosWidth: 0,
-        lastPosHeight: 0.27,
+        posheight: 0,
+        lastPosWidth: '',
+        lastPosHeight: '',
         lastZindex: '',
         rotate: 0,
         lastRotate: 0,
+        visible: 3,
         tracking: false,
         animation: false,
+        currentPage: 0,
         opacity: 1,
         lastOpacity: 0,
         swipe: false,
@@ -64,18 +58,17 @@ export default {
     }
   },
   methods: {
-    inStack (index, currentPage) {
-      let stack = []
-      let visible = this.visible
-      let length = this.data.length
-      for (let i = 0; i < visible; i++) {
-        if (currentPage + i < length) {
-          stack.push(currentPage + i)
-        } else {
-          stack.push(currentPage + i - length)
-        }
-      }
-      return stack.indexOf(index) >= 0
+    next () {
+      this.temporaryData.tracking = false
+      this.temporaryData.animation = true
+      // 计算划出后最终位置
+      let width = this.$el.offsetWidth
+      this.temporaryData.poswidth = width
+      this.temporaryData.posheight = 0
+      this.temporaryData.opacity = 0
+      this.temporaryData.rotate = '3'
+      this.temporaryData.swipe = true
+      this.nextTick()
     },
     nextTick () {
       // 记录最终滑动距离
@@ -93,81 +86,97 @@ export default {
         this.temporaryData.rotate = 0
       })
     },
-    onTransitionEnd (index) {
-      let lastPage = this.temporaryData.currentPage === 0 ? this.data.length - 1 : this.temporaryData.currentPage - 1
-      // dom发生变化正在执行的动画滑动序列已经变为上一层
-      if (this.temporaryData.swipe && index === lastPage) {
-        this.temporaryData.animation = true
-        this.temporaryData.lastPosWidth = 0
-        this.temporaryData.lastPosHeight = 0
-        this.temporaryData.lastOpacity = 0
-        this.temporaryData.lastRotate = 0
-        this.temporaryData.swipe = false
-        this.temporaryData.lastZindex = -1
+    inStack (index, currentPage) {
+      let stack = []
+      let visible = this.temporaryData.visible
+      let length = this.data.length
+      for (let i = 0; i < visible; i++) {
+        if (currentPage + i < length) {
+          stack.push(currentPage + i)
+        } else {
+          stack.push(currentPage + i - length)
+        }
       }
-    },
-    next () {
-      this.temporaryData.tracking = false
-      this.temporaryData.animation = true
-      // 计算划出后最终位置
-      let width = this.$refs.scroll.offsetWidth
-      this.temporaryData.poswidth = width
-      this.temporaryData.posheight = 0
-      this.temporaryData.opacity = 0
-      this.temporaryData.rotate = '3'
-      this.temporaryData.swipe = true
-      this.nextTick()
-    },
-    rotateDirection () {
-      if (this.temporaryData.poswidth <= 0) {
-        return -1
-      } else {
-        return 1
-      }
+      return stack.indexOf(index) >= 0
     },
     // 非首页样式切换
     transform (index) {
-      let currentPage = this.current
-      let length = this.data.length
-      let lastPage = currentPage === 0 ? this.data.length - 1 : currentPage - 1
-      let style = {}
-      let visible = this.visible
-      if (index === this.current) {
-        return
+      let currentPageOne = this.temporaryData.currentPage
+      console.log(2)
+      let currentPageTwo = this.temporaryData.currentPage + 1 === this.data.length ? 0 : this.temporaryData.currentPage + 1
+      let currentPageThree = this.temporaryData.currentPage + 1 === this.data.length ? 0 : this.temporaryData.currentPage + 1
+      if (currentPageThree == 0) {
+        currentPageThree = 1
+      }else{
+        currentPageThree = this.temporaryData.currentPage + 2 === this.data.length ? 0 : this.temporaryData.currentPage + 2
       }
-      if (this.inStack(index, currentPage)) {
-        let perIndex = index - currentPage > 0 ? index - currentPage : index - currentPage + length
-        let tempHeight = this.temporaryData.posheight - (0.27 * perIndex)
-        style['opacity'] = '1'
-        style['transform'] = 'translate3D('+ index * 0.27 +'rem,' + tempHeight + 'rem, 0)'
-        style['zIndex'] = visible - perIndex
-        if (!this.temporaryData.tracking) {
-          style['transitionTimingFunction'] = 'ease'
-          style['transitionDuration'] = 300 + 'ms'
-        }
-      } else if (index === lastPage) {
-        style['transform'] = 'translate3D(' + this.temporaryData.lastPosWidth + 'rem' + ',' + this.temporaryData.lastPosHeight + 'rem' + ',0rem) ' + 'rotate(' + this.temporaryData.lastRotate + 'deg)'
-        style['opacity'] = this.temporaryData.lastOpacity
-        style['zIndex'] = this.temporaryData.lastZindex
-        style['transitionTimingFunction'] = 'ease'
-        style['transitionDuration'] = 300 + 'ms'
-      } else {
-        style['zIndex'] = '-1'
-        style['transform'] = 'translate3D(0,0,' + -1 * visible * 0.27 + 'rem' + ')'
-      }
-      return style
-    },
-
-    // 首页样式切换
-    transformIndex (index) {
-      if (index === this.current) {
+      if (index !== currentPageOne && index !== currentPageTwo && index !== currentPageThree) {
         let style = {}
-        style['transform'] = 'translate3D(' + this.temporaryData.poswidth + 'rem' + ',' + this.temporaryData.posheight + 'rem' + ', 0rem) ' + 'rotate(' + this.temporaryData.rotate + 'deg)'
-        style['opacity'] = this.temporaryData.opacity
-        style['zIndex'] = 10
+        style['transform'] = 'translate3D(' + this.temporaryData.poswidth + 'px' + ',' + this.temporaryData.posheight + 'px' + ',0px) ' + 'rotate(' + this.temporaryData.rotate + 'deg)'
+        style['opacity'] = 0
+        style['zIndex'] = 1
+        style['top'] = '0'
+        style['width'] = '8.29rem'
+        style['left'] = '0.855rem'
         if (this.temporaryData.animation) {
           style['transitionTimingFunction'] = 'ease'
-          style['transitionDuration'] = (this.temporaryData.animation ? 300 : 0) + 'ms'
+          style['transitionDuration'] = (this.temporaryData.animation ? 500 : 0) + 'ms'
+        }
+        return style
+      }
+    },
+    // 首页样式切换
+    transformOne (index) {
+      if (index === this.temporaryData.currentPage) {
+        let style = {}
+        style['transform'] = 'translate3D(' + this.temporaryData.poswidth + 'px' + ',' + this.temporaryData.posheight + 'px' + ',0px) ' + 'rotate(' + this.temporaryData.rotate + 'deg)'
+        style['opacity'] = 1
+        style['zIndex'] = 30
+        style['top'] = '0.533rem'
+        if (this.temporaryData.animation) {
+          style['transitionTimingFunction'] = 'ease'
+          style['transitionDuration'] = (this.temporaryData.animation ? 500 : 0) + 'ms'
+        }
+        return style
+      }
+    },
+    // 首页样式切换
+    transformTwo (index) {
+      let currentPage = this.temporaryData.currentPage + 1 === this.data.length ? 0 : this.temporaryData.currentPage + 1
+      if (index === currentPage) {
+        let style = {}
+        style['transform'] = 'translate3D(' + this.temporaryData.poswidth + 'px' + ',' + this.temporaryData.posheight + 'px' + ',0px) ' + 'rotate(' + this.temporaryData.rotate + 'deg)'
+        style['opacity'] = 1
+        style['zIndex'] = 20
+        style['top'] = '0.267rem'
+        style['width'] = '8.74rem'
+        style['left'] = '0.63rem'
+        if (this.temporaryData.animation) {
+          style['transitionTimingFunction'] = 'ease'
+          style['transitionDuration'] = (this.temporaryData.animation ? 500 : 0) + 'ms'
+        }
+        return style
+      }
+    },
+    // 首页样式切换
+    transformThree (index) {
+      let currentPage = this.temporaryData.currentPage + 1 === this.data.length ? 0 : this.temporaryData.currentPage + 1
+      if (currentPage === 0) {
+        currentPage = 1
+      } else {
+        currentPage = this.temporaryData.currentPage + 2 === this.data.length ? 0 : this.temporaryData.currentPage + 2
+      }
+      if (index === currentPage) {
+        let style = {}
+        style['transform'] = 'translate3D(' + this.temporaryData.poswidth + 'px' + ',' + this.temporaryData.posheight + 'px' + ',0px) ' + 'rotate(' + this.temporaryData.rotate + 'deg)'
+        style['opacity'] = 1
+        style['zIndex'] = 10
+        style['top'] = '0'
+        style['width'] = '8.29rem'
+        style['left'] = '0.855rem'
+        if (this.temporaryData.animation) {
+          style['transitionTimingFunction'] = 'ease'
+          style['transitionDuration'] = (this.temporaryData.animation ? 500 : 0) + 'ms'
         }
         return style
       }
@@ -199,11 +208,11 @@ export default {
       height: 2.29rem;
       border-radius: .16rem;
       box-shadow: 0 0.134rem 0.4rem rgba(0,0,0,.06);
-      background-color: #fff;
+      background-color: red;
       left: .4rem;
       overflow: hidden;
       position: absolute;
-      opacity: 0;
+      opacity: 1;
       display: -ms-flexbox;
       -ms-flex-direction: column;
       flex-direction: column;
@@ -240,6 +249,14 @@ export default {
         }
       }
     }
+  }
+  .button{
+    width: 0.8rem;
+    height: 0.8rem;
+    background-color: red;
+    color: #000;
+    border-radius: 50%;
+
   }
 }
 </style>

@@ -1,14 +1,14 @@
 <template>
   <div class="categories-category-content">
     <div class="menu">
-      <div class="sticky">
-        <div class="item" v-for="(item, index) in categorie" :key="index">{{ item.name }}</div>
-      </div>
+      <cube-scroll class="sticky">
+        <div :class="['item', index === itemIndex ? 'activ_item' : '']" v-for="(item, index) in categorie" :key="index" @click="tabCategories(index)">{{ item.name }}</div>
+      </cube-scroll>
     </div>
     <div class="list" ref="list">
       <cube-scroll :scroll-events="['scroll']" ref="scroll">
-        <div class="item" v-for="(item, index) in categorie" :key="index">
-          <div class="banner" v-lazy:background-image.container="item.ad_image + '@640w_1l'">
+        <div :class="['item', index === categorie.length - 1 ? 'last_item' : '']" v-for="(item, index) in categorie" :key="index" :ref="'item' + index">
+          <div class="banner"  v-lazy:background-image.container="item.ad_image + '@640w_1l'">
             <div class="title">{{ item.name }}</div>
             <div class="desc">{{ item.desc }}</div>
           </div>
@@ -38,13 +38,38 @@ export default {
       categorie: categorie.data
     }
   },
+  data () {
+    return {
+      itemIndex: 0,
+      categoriesList: []
+    }
+  },
   mounted () {
     this.$refs.list.style.height = this.$root.$el.clientHeight + 'px'
-
-    this.$refs.scroll.$on('scroll', object => {
-      if (object.y > 0) return false
-
+    let itemHeight = [0]
+    Object.keys(this.$refs).forEach((key) => {
+      if(this.$refs[key][0]){
+        itemHeight.push(this.$refs[key][0].clientHeight)
+      }
     })
+    let height = 0
+    itemHeight.forEach( (item, index) => {
+      height = height + item
+      this.categoriesList.push(height)
+    })
+    this.$refs.scroll.$on('scroll', object => {
+      this.categoriesList.forEach( (item, index) => {
+        const y = Math.abs(object.y)
+        if (y >= item && y < this.categoriesList[index + 1]) {
+          this.itemIndex = index
+        }
+      })
+    })
+  },
+  methods: {
+    tabCategories (index) {
+      this.$refs.scroll.scrollTo(0, -this.categoriesList[index], 200)
+    }
   }
 }
 </script>
@@ -69,8 +94,21 @@ export default {
           text-align: center;
           .font-dpr(15px);
         }
+        .activ_item{
+          position: relative;
+          background-color: #FFF;
+          color: #AE2121;
+          &:after{
+            content: '';
+            position: absolute;
+            width: 0.16rem;
+            height: 1.013rem;
+            left: 0;
+            top: 0.2935rem;
+            background-color: #AE2121;
+          }
+        }
       }
-
     }
     .list {
       width: 7.55rem;
@@ -80,6 +118,9 @@ export default {
       // padding-top: 1.6rem;
       // padding-bottom: 1.3rem;
       // height: 0;
+      .last_item{
+        min-height: 100vh;
+      }
       .banner {
         width: 100%;
         height: 1.63rem;

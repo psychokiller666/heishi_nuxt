@@ -90,7 +90,7 @@ export default {
       hotsale: hotsale.data.result,
       categories: categories.data,
       goodslist: goodslist.data.result,
-      topten: top10.data
+      topten: top10.data.concat(top10.data)
     };
   },
   data () {
