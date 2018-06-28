@@ -17,19 +17,19 @@
         default: ''
       },
       bottom: {
-        type: String,
-        default: '0rem'
+        type: Number,
+        default: 0
       },
       top: {
-        type: String,
-        default: '0rem'
+        type: Number,
+        default: 0
       }
     },
     computed: {
       containerHeight () {
         return {
-          'padding-top': this.top,
-          'padding-bottom': this.bottom
+          'padding-top': this.top + 'rem',
+          'padding-bottom': this.bottom + 'rem'
         }
       }
     }

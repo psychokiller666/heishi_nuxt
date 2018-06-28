@@ -209,6 +209,12 @@ export default {
       color: #919191;
       border: none;
       margin-bottom: .4rem;
+      .hs-icon;
+      &:before {
+        content: "\e6e5";
+        font-size: 15px;
+        margin-right: .2rem;
+      }
     }
     .list {
       .item {

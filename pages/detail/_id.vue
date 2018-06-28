@@ -8,11 +8,9 @@
       </div>
       <div class="title">{{ article.title }}</div>
       <div class="label">
-        <div class="price">￥{{ price }}</div>
+        <div class="price">￥ {{ this.price }}</div>
         <div class="tags">
-          <span>包邮</span>
-          <span>预售</span>
-          <span>库存紧张</span>
+          <span v-show="activeSku.tags" v-for="(tag, index) in activeSku.tags" :key="index">{{ tag }}</span>
         </div>
       </div>
     </div>
@@ -22,14 +20,14 @@
         <div class="label" v-lazy:background-image.container="article.seller.avatar"></div>
         <div class="text">{{ article.seller.announcement }}</div>
       </div>
-      <div class="item" @click="openstylePopup">
+      <div class="item" @click="openSkuPopup">
         <div class="label">已选</div>
-        <div class="text">深海诱惑 1件</div>
+        <div class="text">{{ this.activeSku.name ? this.activeSku.name : '请选择' }}</div>
       </div>
-      <div class="item">
+      <!-- <div class="item">
         <div class="label">预售</div>
         <div class="text">预计发货时间为10月31日</div>
-      </div>
+      </div> -->
       <div class="decs">
         <div class="title">狠货简介</div>
         <div class="content" v-html="article.desc"></div>
@@ -49,7 +47,7 @@
           <span>{{ article.fans.like_num }}个人觉得非常牛逼</span>
         </div>
         <div class="list">
-          <button class="praise-btn"></button>
+          <button class="praise-btn" :class="article.is_liked ? 'active' :''" @click="submit_like"></button>
           <div class="item" v-for="(item, index) in article.fans.like_list" :key="index" v-lazy:background-image.container="item.avatar"></div>
           <!-- <div class="item" v-lazy:background-image.container="'//img8.ontheroadstore.com/upload/180117/e2cf78b9c74f2d82053afd2b842ad7a7.png'"></div> -->
         </div>
@@ -65,7 +63,7 @@
     </guessLike>
     <!-- tabber -->
     <Tabber :seller="article.seller" class="article-tabber">
-      <button class="addcart-btn" @click="openstylePopup">加入购物车</button>
+      <button class="addcart-btn" @click="openSkuPopup">加入购物车</button>
       <button class="buy-btn">买他妈的</button>
     </Tabber>
     <!-- 打赏 -->
@@ -82,7 +80,9 @@
       <button class="close-btn" @click="closeRewardPopup"></button>
     </Popup>
     <!-- 选择款式 -->
-    <Sku :data="article.type" :banner="article.banner[0]" :title="article.title" ref="skuPopup" />
+    <Sku :data="activeSku" :itemId="Number(this.$route.params.id)" :banner="article.banner[0]" :title="article.title" :price="price" ref="skuPopup">
+      <span slot="tags" class="tag-item" :class="tag.name === activeSku.name ? 'active': ''" v-for="(tag, index) in article.type" :key="index" @click="selectSku(index)">{{ tag.name }}</span>
+    </Sku>
   </cube-scroll>
 </template>
 
@@ -101,12 +101,14 @@ export default {
   },
   data () {
     return {
+      activeSku: {},
       rewardValue: null
     }
   },
   layout: 'articleLayout',
   async asyncData ({app, params, error}) {
     const res = await app.$axios.$get('appv3_1/goods/' + params.id)
+    // console.log(res)
     if(res.status === 1) {
       return {
         article: res.data
@@ -117,7 +119,6 @@ export default {
         message: res.info
       })
     }
-
   },
   components: {
     guessLike, comment, seller, Popup, Tabber, Sku, baseTitle
@@ -129,17 +130,58 @@ export default {
     closeRewardPopup () {
       this.$refs.rewardPopup.hide()
     },
-    openstylePopup () {
+    openSkuPopup () {
       this.$refs.skuPopup.show()
     },
-    closestylePopup() {
+    closeSkuPopup() {
       this.$refs.skuPopup.hide()
+    },
+    submit_like () {
+      // 点赞接口
+      this.$axios.post(this.article.is_liked ? 'appv2/unlike' : 'appv1/like', {
+        post_id: this.$route.params.id
+      }).then(res => {
+        // console.log(res)
+        if (res.data.status === 1) {
+          // 弹出框
+          this.$createToast({
+            time: 800,
+            txt: this.article.is_liked ? '😢 取消了' : '👍 赞好了'
+          }).show()
+          if (this.article.is_liked === 0) {
+            // 添加用户头像
+            this.article.fans.like_list.unshift({
+              'avatar': this.$auth.user.avatar,
+              'nickname': this.$auth.user.nickname,
+              'uid': this.$auth.user.id
+            })
+            this.article.fans.like_num ++
+            this.article.is_liked = 1
+          } else {
+            // 删除用户头像
+            this.article.fans.like_num --
+            this.article.is_liked = 0
+            this.article.fans.like_list.shift()
+          }
+        }
+      })
+    },
+    // 选择sku
+    selectSku (activeIndex) {
+      this.article.type.forEach((item, index) => {
+        if (index === activeIndex) {
+          this.activeSku = item
+        }
+      })
     }
   },
   computed: {
     price () {
+      if (this.activeSku.price) {
+        return this.activeSku.price.toString()
+      }
       if (this.article.price.length === 1) {
-        return this.article.price[0]
+        return this.article.price[0].toString()
       } else {
         return this.article.price[0] + ' ~ ' + this.article.price[1]
       }
@@ -163,8 +205,6 @@ export default {
       font-weight: 400;
     }
   }
-
-
 
   .cube-reward-popup {
     text-align: center;
@@ -394,6 +434,12 @@ export default {
             line-height: 1rem;
             text-align: center;
           }
+          &.active {
+            &:after {
+              content: "\e660";
+              color: #ae2121;
+            }
+          }
         }
         .item {
           width: 1rem;
@@ -469,6 +515,20 @@ export default {
           margin-right: 0;
         }
       }
+    }
+  }
+  .tag-item {
+    border: .03rem solid #999;
+    .font-dpr(13px);
+    margin-right: .27rem;
+    margin-bottom: .27rem;
+    padding: .13rem .4rem;
+    color: #999;
+    border-radius: .11rem;
+    &.active {
+      border-color: #ae2121;
+      background: #ae2121;
+      color: #fff;
     }
   }
 </style>

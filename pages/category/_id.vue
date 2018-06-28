@@ -1,5 +1,5 @@
 <template>
-  <cube-scroll :data="goodslist" @pulling-up="pullingUp" :options="options" ref="scroll">
+  <cube-scroll :data="goodslist" @pulling-up="pullingUp" :options="options" ref="scroll" class="category-id-tag">
     <div class="tags">
       <cube-scroll :data="tags" direction="horizontal" ref="tags">
         <nuxt-link :to="{ name: 'category-id-tag', params: { id: categoryId, tag: item.name } }" class="item" v-for="(item, index) in tags" :key="index" exact>
@@ -135,68 +135,64 @@ export default {
 
 <style lang="less" scoped>
   @import '../../assets/less/common.less';
-
-  .tags {
-    width:9.6rem;
-    margin-left: .4rem;
-    // padding: .53rem 0;
-    padding-top: .4rem;
-    height: .96rem;
-    // border-bottom: .013rem solid #E8E8E8;
-    // border-top: .013rem solid #E8E8E8;
-    white-space: nowrap;
-    .item {
+  .category-id {
+    .tags {
+      width:9.6rem;
+      margin-left: .4rem;
+      padding-top: .4rem;
       height: .96rem;
-      width: 1.92rem;
-      display: inline-block;
-      margin-right: .27rem;
-      position: relative;
-      border-radius: .16rem;
-      // text-align: center;
-      // line-height: .96rem;
-      &.nuxt-link-active {
-        &:before {
-          content: '';
-          position: absolute;
-          width: .427rem;
-          height: .0533rem;
-          border-radius: .08rem;
-          background: #fff;
-          left: 50%;
-          bottom: .16rem;
-          -webkit-transform: translateX(-50%);
-          transform: translateX(-50%);
-          z-index: 99;
-        }
-      }
-      &:after {
-        position: absolute;
-        content: "";
-        background: linear-gradient(rgba(1,1,1,0), rgba(0,0,0,0.6));
-        box-sizing: border-box;
-        width: 100%;
-        height: 100%;
-        left: 0;
-        top: 0;
-        border-radius: .16rem;
-      }
-      .image {
-        width: 100%;
-        height: 100%;
-        border-radius: .16rem;
-        background-size: cover;
-        background-position: center;
-      }
-      .label {
-        .font-dpr(13px);
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 1;
-        color: #fff;
+      white-space: nowrap;
+      .item {
+        height: .96rem;
         width: 1.92rem;
-        line-height: .96rem;
-        text-align: center;
+        display: inline-block;
+        margin-right: .27rem;
+        position: relative;
+        border-radius: .16rem;
+        &.nuxt-link-active {
+          &:before {
+            content: '';
+            position: absolute;
+            width: .427rem;
+            height: .0533rem;
+            border-radius: .08rem;
+            background: #fff;
+            left: 50%;
+            bottom: .16rem;
+            -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+            z-index: 99;
+          }
+        }
+        &:after {
+          position: absolute;
+          content: "";
+          background: linear-gradient(rgba(1,1,1,0), rgba(0,0,0,0.6));
+          box-sizing: border-box;
+          width: 100%;
+          height: 100%;
+          left: 0;
+          top: 0;
+          border-radius: .16rem;
+        }
+        .image {
+          width: 100%;
+          height: 100%;
+          border-radius: .16rem;
+          background-size: cover;
+          background-position: center;
+        }
+        .label {
+          .font-dpr(13px);
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 1;
+          color: #fff;
+          width: 1.92rem;
+          line-height: .96rem;
+          text-align: center;
+        }
       }
     }
   }

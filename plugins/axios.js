@@ -1,13 +1,24 @@
-export default function ({ app, $axios, store, redirect, route }) {
+export default function ({ app, redirect }) {
   // 设置请求版本
-  $axios.setHeader('version', store.getters.getVersion)
-  // $axios.setToken('bearereyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vYXBpdGVzdC5vbnRoZXJvYWRzdG9yZS5jb20vYXBwdjVfMS9sb2dpbi93ZWNoYXRhcHAiLCJpYXQiOjE1MjY3NDA4NzMsImV4cCI6MTUyNjk1Njg3MywibmJmIjoxNTI2NzQwODczLCJqdGkiOiI2bkhRVExORno5Z29xajI2Iiwic3ViIjo3MCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.K1giVmB8DsVJqfH_tNDKkhb-7yITe7Z9XajwUOKvyb0')
-  // console.log(this)
-  $axios.onResponse(response => {
-    // console.log(response)
-  })
-  $axios.onError(error => {
-
+  app.$axios.setHeader('version', '3.3.1')
+  // console.log(app.store)
+  app.$axios.onError(error => {
+    switch (error.response && error.response.status) {
+      case 401:
+        if (error.response.data.id === 'illegal_access_token') {
+          redirect('/login?redirect=' + app.router.history.current.fullPath)
+        } else if(error.response.data.id === 'token_expired') {
+          // 刷新token
+          app.$axios.get('appv2_2/token').then(res => {
+            app.$auth.setToken('local', res.data.data.token)
+            app.$axios.setToken(res.data.data.token)
+            // app.store.dispatch('getRefreshToken', res.data.data.token)
+          }).then(() => {
+            console.log('页面刷新')
+          })
+        }
+      break;
+    }
   })
 
 }

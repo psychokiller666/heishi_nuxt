@@ -30,6 +30,7 @@
 <script>
 export default {
   layout: 'indexLayout',
+  middleware: 'auth',
   async asyncData ({app}) {
     const me = await app.$axios.$get('appv4/user/simple')
     return {

@@ -41,6 +41,8 @@ export default {
   margin-left: .4rem;
   margin-right: .4rem;
   border-bottom: .013rem solid #E8E8E8;
+  border-top: .013rem solid #E8E8E8;
+  padding-top: .53rem;
   .item {
     margin-bottom: .53rem;
     overflow: hidden;

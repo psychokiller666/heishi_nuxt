@@ -6,6 +6,7 @@
 
 <script>
 export default {
-  layout: 'indexLayout'
+  layout: 'indexLayout',
+  middleware: 'auth'
 }
 </script>

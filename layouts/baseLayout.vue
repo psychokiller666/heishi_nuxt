@@ -1,5 +1,5 @@
 <template>
-  <basePage>
+  <basePage type="base" :bottom="bottom">
     <transition name="page-move" slot="content">
       <nuxt class="hs-view"></nuxt>
     </transition>
@@ -7,8 +7,6 @@
 </template>
 
 <style lang="less" scoped>
-// @import '../assets/less/common.less';
-
 .hs-view {
   box-sizing: border-box;
   transform: translate3d(0, 0, 0)
@@ -25,8 +23,10 @@
 
 <script>
 import basePage from '~/components/basePage.vue'
+import layouts from '~/mixins/layouts.js'
 
 export default {
+  mixins: [layouts],
   components: {
     basePage
   }

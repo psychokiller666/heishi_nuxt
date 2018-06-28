@@ -3,12 +3,11 @@
     <div class="box">
       <div class="image" :style="{ 'background-image' : 'url('+ banner +'@640w_1l)' }"></div>
       <div class="title">{{ title }}</div>
-      <div class="price">￥1</div>
+      <div class="price">￥ {{ price }}</div>
       <div class="item">
         <div class="label">款式</div>
         <div class="tags">
-          <span v-for="(item, index) in data" :key="index">{{ item.name }}</span>
-          <!-- <span>完</span> -->
+          <slot name="tags"></slot>
         </div>
       </div>
       <div class="item">
@@ -21,7 +20,7 @@
       </div>
     </div>
     <div class="feature">
-      <cube-button>加入购物车</cube-button>
+      <cube-button @click="addcart">加入购物车</cube-button>
       <cube-button>立即购买</cube-button>
     </div>
   </Popup>
@@ -38,8 +37,14 @@ export default {
     banner: {
       type: String
     },
+    price: {
+      type: String
+    },
     data: {
-      type: Array
+      type: Object
+    },
+    itemId: {
+      type: Number
     }
   },
   methods: {
@@ -48,28 +53,26 @@ export default {
     },
     hide () {
       this.$refs.skuPopup.hihe()
-    }
-  },
-  computed: {
-    skuArray () {
-      return [
-        {
-          label: '1',
-          value: '1'
-        },
-        {
-          label: '2',
-          value: '2'
-        },
-        {
-          label: '3',
-          value: '3'
-        }
-      ]
+    },
+    addcart () {
+      this.$store.dispatch('cart/addCartGood', {
+        count: 1,
+        item_id: this.itemId,
+        model_id: this.data.id
+      }).then(() => {
+        this.$createToast({
+          time: 800,
+          txt: '添加好了'
+        }).show()
+      })
+      // console.log(this)
     }
   },
   components: {
     Popup
+  },
+  mounted () {
+    // console.log(this.data)
   }
 }
 </script>
@@ -91,6 +94,7 @@ export default {
         height: 2.69rem;
         left: .4rem;
         top: -1.21rem;
+        border-radius: .16rem .16rem 0 0;
         .hs-cover;
       }
       .title {
@@ -110,11 +114,30 @@ export default {
       .item {
         display: flex;
         padding: 0 .4rem;
+        // margin-bottom: .4rem;
+        box-sizing: border-box;
+        margin-top: .4rem;
+        width: 10rem;
         .label {
           width: .88rem;
           .font-dpr(15px);
           line-height: .64rem;
           margin-right: .4rem;
+        }
+        .tags {
+          display: flex;
+          flex-wrap: wrap;
+          width: 8.32rem;
+          .tag-item {
+            // display: inline-block;
+            border: .03rem solid #999;
+            .font-dpr(13px);
+            margin-right: .27rem;
+            margin-bottom: .27rem;
+            padding: .13rem .4rem;
+            color: #999;
+            border-radius: .11rem;
+          }
         }
         .number {
           display: flex;

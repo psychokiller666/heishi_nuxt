@@ -30,7 +30,7 @@
   </Popup>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
 
 import Popup from '~/components/basePopup.vue'
 

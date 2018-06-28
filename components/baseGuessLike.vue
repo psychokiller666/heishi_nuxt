@@ -92,6 +92,8 @@ export default {
   .item {
     margin-bottom: .53rem;
     overflow: hidden;
+    display: flex;
+    justify-content: space-between;
     &:last-child {
       margin-bottom: 0;
     }
@@ -100,16 +102,13 @@ export default {
       height: 2.29rem;
       border-radius: .16rem;
       .hs-cover;
-      .hs-fl;
     }
     .text {
       width: 4.29rem;
       height: 2.29rem;
       position: relative;
-      .hs-fr;
       .title {
         color: #202123;
-        // height: 2em;
         line-height: 1.3em;
         .font-dpr(14px);
         overflow: hidden;
@@ -142,25 +141,22 @@ export default {
         white-space: nowrap;
         position: absolute;
         bottom: .72rem;
-        // left: 0;
-        .hs-cf;
+        display: flex;
         .avatar {
           width: .53rem;
           height: .53rem;
           .hs-avatar;
-          .hs-fl;
         }
         .nickname {
           width: 3.34rem;
+          margin-left: .4rem;
           line-height: .6rem;
           .font-dpr(14px);
-          .hs-fr;
           color: #8E8E8E;
           text-align: left;
         }
       }
     }
-    .hs-cf;
   }
 }
 </style>

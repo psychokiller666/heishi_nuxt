@@ -2,17 +2,17 @@
   <div class="index-top10">
     <baseTitle title="本周TOP10" label="图层卖的贼鸡儿好的" class="header_hack" />
     <div class="list" ref="scroll">
-      <div class="item" v-for="(item, index) in data" :key="index" :style="[transformOne(index),transformTwo(index),transformThree(index),transform(index)]">
+      <nuxt-link class="item" to="/" v-for="(item, index) in data" :key="index" :style="[transformOne(index),transformTwo(index),transformThree(index),transform(index)]">
         <div class="image" v-lazy:background-image.container="item.image + '@640w_1l'" ></div>
         <div class="text">
-          <div class="title">如果捡肥皂都长这样长这样 长这样{{index}}</div>
+          <div class="title">{{ item.title }}</div>
           <div class="label">
             <span>夜店蹦迪</span>
           </div>
         </div>
-      </div>
+      </nuxt-link>
     </div>
-    <cube-button icon="cubeic-right" class="button" @click="next"></cube-button>
+    <button class="button" @click="next"></button>
   </div>
 </template>
 <script>
@@ -102,7 +102,7 @@ export default {
     // 非首页样式切换
     transform (index) {
       let currentPageOne = this.temporaryData.currentPage
-      console.log(2)
+      // console.log(2)
       let currentPageTwo = this.temporaryData.currentPage + 1 === this.data.length ? 0 : this.temporaryData.currentPage + 1
       let currentPageThree = this.temporaryData.currentPage + 1 === this.data.length ? 0 : this.temporaryData.currentPage + 1
       if (currentPageThree == 0) {
@@ -193,6 +193,8 @@ export default {
 
 .index-top10 {
   position: relative;
+  // margin: 0 .4rem;
+  padding-bottom: .53rem;
   .header_hack {
     padding-top: .53rem;
     padding-left: .4rem;
@@ -207,35 +209,31 @@ export default {
       width: 9.2rem;
       height: 2.29rem;
       border-radius: .16rem;
-      box-shadow: 0 0.134rem 0.4rem rgba(0,0,0,.06);
-      background-color: red;
+      box-shadow: 0 0.134rem 0.4rem rgba(0,0,0,.2);
+      background-color: #fff;
       left: .4rem;
-      overflow: hidden;
       position: absolute;
       opacity: 1;
-      display: -ms-flexbox;
-      -ms-flex-direction: column;
-      flex-direction: column;
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      pointer-events: auto;
-      .hs-cf();
+      display: flex;
+      // flex-direction: column;
+      // flex-wrap: nowrap;
       .image {
         width: 4.48rem;
-        height: 2.29rem;
+        height: 100%;
         .hs-cover;
-        .hs-fl;
+        // .hs-fl;
         border-radius: .16rem 0 0 .16rem;
+        // box-sizing: border-box;
+        // display: inline-block;
       }
       .text {
         width: 3.84rem;
-        margin-right: .53rem;
+        height: 100%;
+        margin-left: .53rem;
         margin-top: .35rem;
         text-align: left;
-        .hs-fr;
+        // display: inline-block;
+        // box-sizing: border-box;
         .title {
           color: #202123;
           // height: 2em;
@@ -247,16 +245,31 @@ export default {
           -webkit-box-orient:vertical;
           -webkit-line-clamp:2;
         }
+        .label {
+          color: #8E8E8E;
+          .font-dpr(12px);
+          margin: 0.21rem 0.16rem 0.21rem 0;
+          padding: 0.08rem 0.133rem;
+          border-radius: 0.107rem;
+          background: #F5F5F5;
+          display: inline-block;
+        }
       }
     }
   }
   .button{
     width: 0.8rem;
     height: 0.8rem;
-    background-color: red;
+    text-align: center;
+    background-color: #fff;
     color: #000;
-    border-radius: 50%;
-
+    left: 50%;
+    margin-left: -.4rem;
+    bottom: 0;
+    border-radius: 100%;
+    box-shadow: 0 .04rem .02rem 0 rgba(0,0,0,0.5);
+    position: absolute;
+    border: none;
   }
 }
 </style>

@@ -44,7 +44,8 @@ module.exports = {
   ],
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/proxy'
+    '@nuxtjs/proxy',
+    '@nuxtjs/auth'
   ],
   proxy: {
     '/api/': { target: config.proxyUrl, pathRewrite: {'^/api/': ''} }
@@ -53,21 +54,33 @@ module.exports = {
     baseURL: config.baseUrl,
     browserBaseURL: config.baseUrl,
     proxy: true,
-    responseInterceptor: (res, ctx) => {
-      console.log('ssss')
-    if (res.data.status === 0) {
-      return res
-    } else {
-      console.log('dddd')
-      ctx.error({
-        statusCode: 404,
-        message: res.data.info
-      })
+    // credentials: true
+  },
+  auth: {
+    redirect: {
+      login: '/login',
+      callback: '/login',
+      user: 'me'
+    },
+    // cookie: false,
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: 'appv5_1/login/wechat',
+            method: 'post',
+            propertyName: 'data.token'
+          },
+          user: {
+            url: 'appv4/user/simple',
+            method: 'get',
+            propertyName: 'data'
+          }
+        },
+        tokenType: '',
+        // tokenRequired: false
+      }
     }
-  }
-    // retry: true,
-    // debug: true
-    // debug: true
   },
   dev: process.env.NODE_ENV !== 'production',
   /*
@@ -81,8 +94,8 @@ module.exports = {
     /*
     ** Run ESLint on save
     */
-    extend (config, { isDev, isClient }) {
-      if (isDev && isClient) {
+    extend (config, { isDev }) {
+      if (isDev && process.client) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,

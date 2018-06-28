@@ -1,5 +1,5 @@
 <template>
-  <cube-scroll :data="goodslist" class="project-id-posts">
+  <cube-scroll :data="goodslist" @pulling-up="pullingUp" :options="options" ref="scroll" class="project-id-posts">
     <header class="navber">
       <Banner>
         <baseTitle slot="header" :title="project.project_name" :label="project.project_desc" class="banner-header" />
@@ -24,6 +24,21 @@ import baseTitle from '~/components/baseTitle.vue'
 
 export default {
   layout: 'baseLayout',
+  data () {
+    return {
+      goodslist: [],
+      goodslistpage: 1,
+      options: {
+        pullUpLoad: {
+          txt: {
+            more: '加载更多',
+            noMore: '没有更多了'
+          }
+        }
+      },
+      scrolltoVisible: false
+    }
+  },
   async asyncData ({ app, params }) {
     const project = await app.$axios.$get('appv2_4/bigprojects/' + params.id)
     return {
@@ -42,7 +57,48 @@ export default {
       return temp + "px";
     }
   },
+  watch: {
+    '$route': 'tabInit'
+  },
   methods: {
+    // 初始化
+    init () {
+      // this.pageInit()
+      // this.
+      this.getFatherGoods()
+      // this.goodslist = this.initGoodsList
+    },
+    // 初始化tab
+    tabInit () {
+      this.pageInit()
+      this.getChild()
+    },
+    // 分页初始化
+    pageInit () {
+      this.goodslist = []
+      this.goodslistpage = 1
+    },
+    // 获取父级商品列表
+    async getFatherGoods () {
+
+    },
+    async getChild () {
+      await this.$axios.$get('appv2/projectpostslist', {
+        params: {
+          cur_page: this.goodslistpage,
+          page_size: 10,
+          project_id: this.$route.params.posts
+        }
+      }).then(res => {
+        if (res.data.total_pages >= this.goodslistpage) {
+          this.goodslist = this.goodslist.concat(res.data.object_list)
+          this.goodslistpage++
+        } else {
+          this.$refs.scroll.forceUpdate()
+          return false
+        }
+      })
+    },
     async pullingUp () {
       // const goods = await this.$axios.$get('appv2/projectpostslist', {
       //   params: {
@@ -52,15 +108,6 @@ export default {
       //   }
       // })
       // console.log('ssss')
-    },
-    init () {
-      this.$router.push({
-        name: 'project-id-posts',
-        params: {
-          id: this.project.id,
-          posts: this.project.first_project.project_info.id
-        }
-      })
     }
   },
   components: {

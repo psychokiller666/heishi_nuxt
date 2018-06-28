@@ -9,6 +9,7 @@
     </div>
     <div class="item wechat-login">
       <button @click="getCode">微信登陆</button>
+      <!-- <button @click="logout">微信登陆</button> -->
     </div>
     <div class="item pact">
       <div class="label">登录即同意公路商店</div>
@@ -23,29 +24,39 @@ import config from '~/wechatConfig.js'
 
 export default {
   layout: 'baseLayout',
-  async asyncData ({app}) {
-    // const cart = await app.$axios.$get('appv4/getcart')
-    // console.log(cart)
+  computed: {
+
   },
-  // layout: 'baseLayout',
   methods: {
     getCode () {
       if (!this.$route.query.code) {
-        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + config.wechatAppid + '&redirect_uri=' + encodeURIComponent(window.location.href) + '&response_type=code&scope=snsapi_base&state=1#wechat_redirect'
+        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + config.wechatAppid + '&redirect_uri=' + encodeURIComponent(window.location.href) + '&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
         return false
       }
-      this.wxLogin(this.$route.query.code)
+      this.wechatLogin()
     },
-    async wxLogin (code) {
-      const token = await this.$axios.post('appv5_1/login/wechatapp', {
-        code: code
-      }).then(res => {
-        console.log(res.data)
-      })
+    async wechatLogin () {
+      // 微信登陆
+      await this.$auth.loginWith('local', {
+         data: {
+           code: this.$route.query.code
+         }
+       }).then((res) => {
+         this.redirect()
+       })
+    },
+    redirect() {
+      if (this.$route.query.redirect) {
+        this.$router.push(this.$route.query.redirect)
+      } else {
+        this.$router.push('/')
+      }
     }
   },
   mounted () {
-    // this.getCode()
+    if (this.$auth.loggedIn) {
+      this.redirect()
+    }
   }
 }
 </script>

@@ -29,7 +29,7 @@
   </cube-scroll>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
 import allStreamer from '~/components/allStreamer.vue'
 import Banner from '~/components/index/banner.vue'
 import Classification from '~/components/index/classification.vue'
@@ -38,9 +38,14 @@ import hotSale from '~/components/index/hotSale.vue'
 import Categories from '~/components/index/categories.vue'
 import postsList from '~/components/index/postsList.vue'
 import top10 from '~/components/index/top10.vue'
-import scrollTo from '~/components/basescrollTo.vue'
+import scrollTo from '~/components/basescrollTo'
 
 export default {
+  loadingIndicator: {
+    name: 'circle',
+    color: '#3B8070',
+    background: '#000'
+  },
   async asyncData ({app}) {
     // banner
     const banner = await app.$axios.$get('appv3/modules', {

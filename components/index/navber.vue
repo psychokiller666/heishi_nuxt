@@ -1,7 +1,11 @@
 <template>
   <header class="index-navber">
     <div class="item">
-      <nuxt-link :to="item.link" class="link" exact v-for="(item, index) in navbar" :key="index">{{ item.title }}</nuxt-link>
+      <!-- <nuxt-link :to="item.link" class="link" exact v-for="(item, index) in navbar" :key="index">{{ item.title }}</nuxt-link> -->
+      <nuxt-link to="/" class="link" exact>推荐</nuxt-link>
+      <nuxt-link to="/index/showall" class="link" exact>热门</nuxt-link>
+      <nuxt-link to="/index/follow/bully" v-show="this.$auth.loggedIn" class="link" exact>关注</nuxt-link>
+      <nuxt-link to="/index/sale" class="link" exact>特卖</nuxt-link>
     </div>
     <div class="item center"></div>
     <div class="item">
@@ -21,19 +25,23 @@
         navbar: [
           {
             title: '推荐',
-            link: '/'
+            link: '/',
+            isShow: true
           },
           {
             title: '热门',
-            link: '/index/showall'
+            link: '/index/showall',
+            isShow: true
           },
           {
             title: '关注',
-            link: '/index/follow/bully'
+            link: '/index/follow/bully',
+            isShow: true
           },
           {
             title: '特卖',
-            link: '/index/sale'
+            link: '/index/sale',
+            isShow: true
           }
         ]
       }

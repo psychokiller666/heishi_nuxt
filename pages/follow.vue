@@ -22,7 +22,8 @@ export default {
     // return {
     //   aaaa: 'test'
     // }
-  }
+  },
+  middleware: 'auth'
 }
 </script>
 

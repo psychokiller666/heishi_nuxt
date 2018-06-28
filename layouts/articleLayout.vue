@@ -1,5 +1,5 @@
 <template>
-  <basePage type="article" bottom="1.3rem">
+  <basePage type="article" :bottom="1.3">
     <transition name="page-move" slot="content">
       <nuxt class="hs-view"></nuxt>
     </transition>

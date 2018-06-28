@@ -31,12 +31,8 @@ export default {
       switch (this.error.statusCode && this.error.response.status) {
         case 401:
           // 401错误转跳登陆页面
-          this.$router.push({
-            name: 'login',
-            query: {
-              redirect: this.$router.history.pending.fullPath
-            }
-          })
+          // 如果登陆了，刷新页面
+          // console.log('ggggggg')
         break;
         case 503:
           // 503 倒计时转跳页面

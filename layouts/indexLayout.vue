@@ -1,9 +1,9 @@
 <template>
-  <basePage type="index" bottom="1.3rem">
+  <basePage type="index" :bottom="bottom">
     <transition name="page-move" slot="content">
       <nuxt class="hs-view"></nuxt>
     </transition>
-    <baseTabber slot="tabber" />
+    <baseTabber slot="tabber" data-bottom="1.3" />
   </basePage>
 </template>
 
@@ -25,10 +25,15 @@
 <script>
 import baseTabber from '~/components/baseTabber.vue'
 import basePage from '~/components/basePage.vue'
+import layouts from '~/mixins/layouts.js'
 
 export default {
+  mixins: [layouts],
   components: {
     baseTabber, basePage
+  },
+  mounted () {
+    // console.log(this.bottom)
   }
 }
 </script>
